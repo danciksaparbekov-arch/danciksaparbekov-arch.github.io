@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kolomto — private home music service</title>
+<meta name="description" content="Kolomto is a private, non-commercial home music service for a small group of friends.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<nav><a href="./">Kolomto</a><a href="privacy.html">Privacy Policy</a></nav>
+<h1>Kolomto</h1>
+<p class="sub">A private, non-commercial home music service for a small group of friends (Коломто — домашний музыкальный сервис для друзей).</p>
+
+<div class="card">
+<h2 style="margin-top:0">What Kolomto is</h2>
+<p>Kolomto is a self-hosted music library and player run by one person on a home computer for family and friends. Each user has a personal account with their own library, liked songs and playlists, and listens through a web app on a phone or computer. It is not a public or commercial service: there are no ads and no subscriptions, and strangers cannot sign up — accounts are created by invitation only.</p>
+</div>
+
+<div class="card">
+<h2 style="margin-top:0">Why Kolomto asks for access to YouTube</h2>
+<p>Kolomto has a <b>“Move your music”</b> feature: a new user can bring their existing music collection over from another service instead of rebuilding it by hand. For YouTube / YouTube Music, the user signs in with Google and grants <b>read-only</b> access (<code>youtube.readonly</code>). Kolomto then reads:</p>
+<ul>
+<li>the list of the user's own playlists and the videos in them;</li>
+<li>the user's “Liked videos” list (YouTube Music likes are part of it).</li>
+</ul>
+<p>From these lists Kolomto takes the song title, artist / channel name and video ID, finds the same songs in its music library and recreates the user's liked songs and playlists inside their Kolomto account. Kolomto never changes anything on YouTube: it does not post, like, subscribe, upload or delete, and it does not read viewing history, comments or messages.</p>
+<p>The import is started only by the user, and access can be revoked at any time in <a href="https://myaccount.google.com/permissions">Google Account → Third-party connections</a>.</p>
+</div>
+
+<p>Read the full <a href="privacy.html">Privacy Policy</a> to see exactly what data is used, where it is stored and how to delete it.</p>
+
+<footer>
+Kolomto · <a href="privacy.html">Privacy Policy</a> · Contact: <a href="https://github.com/danciksaparbekov-arch/danciksaparbekov-arch.github.io/issues">GitHub Issues</a> or the support e-mail shown on the Google sign-in screen.
+</footer>
+</main>
+</body>
+</html>
