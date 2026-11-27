@@ -2,7 +2,15 @@
 <html lang="ru" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0B0B0D" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Simbank" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
   <title>Мобильный банк — Главная</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,6 +32,8 @@
       --text-primary: #F2F1F5;
       --text-secondary: #88868E;
       --border-subtle: #2E2D33;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     * {
@@ -37,11 +47,28 @@
       padding: 0;
       background-color: var(--bg-outer);
       color: var(--text-primary);
+      width: 100%;
       height: 100%;
       overflow: hidden;
+      overscroll-behavior: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       font-variant-numeric: tabular-nums;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    .no-scrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
 
     /* Custom Kyrgyzstani Som symbol (lowercase sans-serif 'с' + crisp horizontal underline bar) */
@@ -79,30 +106,39 @@
       width: 100%;
       height: 1.3px;
       background-color: currentColor;
-      margin-top: 1.2px;
+      margin-top: 1px;
       border-radius: 0.5px;
     }
 
-    /* Hide scrollbars cleanly while keeping native touch scroll */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Desktop phone frame vs full-bleed mobile */
+    /* Desktop phone frame vs full-bleed mobile & standalone PWA */
     .app-shell {
       width: 100%;
       max-width: 430px;
-      min-height: 100dvh;
+      height: 100vh;
       height: 100dvh;
+      min-height: 100%;
       background-color: var(--bg-app);
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
+    }
+
+    /* Safe-area adaptation for Standalone Web App (Home Screen icon) */
+    .safe-top-header {
+      padding-top: calc(18px + var(--safe-top));
+    }
+
+    .safe-top-bar {
+      padding-top: calc(14px + var(--safe-top));
+    }
+
+    .safe-bottom-nav {
+      bottom: calc(20px + var(--safe-bottom));
+    }
+
+    .safe-bottom-bar {
+      padding-bottom: calc(22px + var(--safe-bottom));
     }
 
     @media (min-width: 500px) {
@@ -159,16 +195,16 @@
 
     /* Floating Glass Bottom Navigation Bar */
     .floating-nav {
-      background: linear-gradient(180deg, rgba(46, 45, 53, 0.82) 0%, rgba(28, 27, 32, 0.92) 100%);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      background: linear-gradient(180deg, rgba(46, 45, 53, 0.88) 0%, rgba(22, 21, 26, 0.94) 100%);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.16);
     }
 
     .nav-pill-active {
-      background: radial-gradient(circle at 50% 35%, rgba(158, 141, 242, 0.26) 0%, rgba(255, 255, 255, 0.05) 100%);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      background: radial-gradient(circle at 50% 42%, rgba(164, 148, 245, 0.34) 0%, rgba(110, 102, 148, 0.16) 62%, rgba(255, 255, 255, 0.04) 100%);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.22), 0 0 14px rgba(158, 141, 242, 0.16);
     }
 
     /* Transaction Detail Screen Slide Transition */
@@ -230,7 +266,7 @@
       border-top-left-radius: 26px;
       border-top-right-radius: 26px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 20px 20px 30px;
+      padding: 20px 20px calc(28px + var(--safe-bottom));
       transform: translateY(100%);
       transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -268,7 +304,7 @@
     <main id="mainTabContent" class="flex-1 flex flex-col overflow-hidden relative">
 
       <!-- Top Account Balance & Collapsible Quick Actions -->
-      <section class="px-5 pt-5 shrink-0 select-none z-10">
+      <section class="safe-top-header px-5 shrink-0 select-none z-10">
         <!-- 3 Carousel Dots (3rd active purple) -->
         <div id="pageDotsWrapper" class="page-dots-wrapper flex items-center justify-center gap-2 mt-1 mb-4">
           <button onclick="switchAccountSlide(0)" class="account-dot w-1.5 h-1.5 rounded-full bg-[#383640] transition-colors" aria-label="Счет 1"></button>
@@ -396,51 +432,51 @@
     </main>
 
     <!-- ==================== OTHER TABS VIEW (Платежи / Кредиты / Накопления / Ещё) ==================== -->
-    <section id="secondaryTabContent" class="hidden flex-1 flex-col overflow-hidden bg-[#09080C]">
+    <section id="secondaryTabContent" class="hidden flex-1 flex-col overflow-hidden bg-[#09080C] safe-top-bar">
       <!-- Rendered dynamically when switching bottom tabs -->
     </section>
 
     <!-- ==================== FLOATING PILL BOTTOM NAVIGATION BAR ==================== -->
-    <div id="bottomNavWrapper" class="absolute bottom-7 left-0 right-0 px-4 z-30 pointer-events-none">
-      <nav class="floating-nav rounded-full p-1.5 flex items-center justify-between pointer-events-auto">
+    <div id="bottomNavWrapper" class="safe-bottom-nav absolute left-0 right-0 px-3.5 z-30 pointer-events-none">
+      <nav class="floating-nav rounded-full p-1 flex items-center justify-between pointer-events-auto">
         <!-- Tab 1: Главная (Solid house with pitched roof & arched doorway cutout) -->
-        <button onclick="switchBottomTab('home')" data-tab="home" class="nav-btn nav-pill-active flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#9E8DF2] transition-all">
-          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 3.3L3.6 10.2c-.38.31-.6.77-.6 1.26V19a1.8 1.8 0 001.8 1.8h4.4v-4.6a2.8 2.8 0 015.6 0v4.6h4.4A1.8 1.8 0 0021 19v-7.54c0-.49-.22-.95-.6-1.26L12 3.3z"/>
+        <button onclick="switchBottomTab('home')" data-tab="home" class="nav-btn nav-pill-active flex-1 py-2 px-1 rounded-full flex flex-col items-center justify-center gap-1 text-[#9E8DF2] transition-all">
+          <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3.1L3.3 10.2c-.4.33-.6.8-.6 1.3V19a2 2 0 002 2h4.6v-4.8a2.7 2.7 0 015.4 0V21h4.6a2 2 0 002-2v-7.5c0-.5-.2-.97-.6-1.3L12 3.1z"/>
           </svg>
-          <span class="text-[10px] font-medium leading-tight">Главная</span>
+          <span class="text-[10.5px] font-medium leading-none tracking-[-0.01em]">Главная</span>
         </button>
 
         <!-- Tab 2: Платежи (Solid white wallet with folded top edge & right clasp with dark dot) -->
-        <button onclick="switchBottomTab('payments')" data-tab="payments" class="nav-btn flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#F2F2F5] transition-all">
-          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="currentColor">
+        <button onclick="switchBottomTab('payments')" data-tab="payments" class="nav-btn flex-1 py-2 px-1 rounded-full flex flex-col items-center justify-center gap-1 text-[#F2F2F5] transition-all">
+          <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="currentColor">
             <path d="M5.5 4.8L16.8 3.6c.9-.1 1.7.6 1.7 1.5V6.5H6a1.5 1.5 0 00-1.5 1.5v.2A2.5 2.5 0 016 7.7h12.5A2.5 2.5 0 0121 10.2v6.6a2.5 2.5 0 01-2.5 2.5H6a2.5 2.5 0 01-2.5-2.5V7.3c0-1.3.9-2.3 2-2.5zM17.2 12.2a1.3 1.3 0 100 2.6 1.3 1.3 0 000-2.6z"/>
           </svg>
-          <span class="text-[10px] font-medium leading-tight">Платежи</span>
+          <span class="text-[10.5px] font-medium leading-none tracking-[-0.01em]">Платежи</span>
         </button>
 
         <!-- Tab 3: Кредиты (Solid white circle with top-right 90° wedge cut out) -->
-        <button onclick="switchBottomTab('credits')" data-tab="credits" class="nav-btn flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#F2F2F5] transition-all">
-          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="currentColor">
+        <button onclick="switchBottomTab('credits')" data-tab="credits" class="nav-btn flex-1 py-2 px-1 rounded-full flex flex-col items-center justify-center gap-1 text-[#F2F2F5] transition-all">
+          <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 3.5a8.5 8.5 0 108.5 8.5H12V3.5z"/>
           </svg>
-          <span class="text-[10px] font-medium leading-tight">Кредиты</span>
+          <span class="text-[10.5px] font-medium leading-none tracking-[-0.01em]">Кредиты</span>
         </button>
 
         <!-- Tab 4: Накопле... (Solid white rounded-square safe with central ring dial & two bottom feet) -->
-        <button onclick="switchBottomTab('savings')" data-tab="savings" class="nav-btn flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#F2F2F5] transition-all">
-          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="currentColor">
+        <button onclick="switchBottomTab('savings')" data-tab="savings" class="nav-btn flex-1 py-2 px-1 rounded-full flex flex-col items-center justify-center gap-1 text-[#F2F2F5] transition-all">
+          <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M6.2 4h11.6A2.2 2.2 0 0120 6.2v10.4a2.2 2.2 0 01-2.2 2.2H17v1.1a.9.9 0 01-1.8 0v-1.1H8.8v1.1a.9.9 0 01-1.8 0v-1.1h-.8A2.2 2.2 0 014 16.6V6.2A2.2 2.2 0 016.2 4zm5.8 3.9a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm0 2a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/>
           </svg>
-          <span class="text-[10px] font-medium leading-tight">Накопле...</span>
+          <span class="text-[10.5px] font-medium leading-none tracking-[-0.01em]">Накопле...</span>
         </button>
 
         <!-- Tab 5: Ещё (3 left-aligned horizontal bars descending in length) -->
-        <button onclick="switchBottomTab('more')" data-tab="more" class="nav-btn flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#F2F2F5] transition-all">
-          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round">
+        <button onclick="switchBottomTab('more')" data-tab="more" class="nav-btn flex-1 py-2 px-1 rounded-full flex flex-col items-center justify-center gap-1 text-[#F2F2F5] transition-all">
+          <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
             <path d="M4.5 7.5h15M4.5 12h11M4.5 16.5h7.5"/>
           </svg>
-          <span class="text-[10px] font-medium leading-tight">Ещё</span>
+          <span class="text-[10.5px] font-medium leading-none tracking-[-0.01em]">Ещё</span>
         </button>
       </nav>
     </div>
@@ -448,7 +484,7 @@
     <!-- ==================== TRANSACTION DETAIL / RECEIPT SCREEN ==================== -->
     <div id="detailScreen" class="detail-screen">
       <!-- Top Bar with Lavender Back Arrow -->
-      <div class="px-4 pt-4 pb-1 flex items-center shrink-0 bg-[#0B0B0D]">
+      <div class="safe-top-bar px-4 pb-1 flex items-center shrink-0 bg-[#0B0B0D]">
         <button onclick="closeTransactionDetail()" class="pressable p-2 -ml-1 text-[#9E8DF2] rounded-full hover:bg-white/5" aria-label="Назад">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M11 18l-6-6 6-6"/>
@@ -616,7 +652,7 @@
     <!-- ==================== SHARE RECEIPT SCREEN ('Поделиться квитанцией') ==================== -->
     <div id="receiptShareScreen" class="receipt-share-screen">
       <!-- Top Back Bar -->
-      <div class="px-4 pt-4 pb-1 flex items-center shrink-0">
+      <div class="safe-top-bar px-4 pb-1 flex items-center shrink-0">
         <button onclick="closeReceiptShareScreen()" class="pressable p-2 -ml-1 text-[#9E8DF2] rounded-full hover:bg-white/5" aria-label="Назад">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M11 18l-6-6 6-6"/>
@@ -763,7 +799,7 @@
       </div>
 
       <!-- Bottom Lavender 'Отправить' Button -->
-      <div class="px-5 pt-2 pb-6 shrink-0 bg-black">
+      <div class="safe-bottom-bar px-5 pt-2 shrink-0 bg-black">
         <button onclick="generateAndDownloadReceiptPdf()" class="pressable w-full py-4 rounded-full bg-[#9E8DF2] text-[#111115] font-medium text-[16px] shadow-lg shadow-[#9E8DF2]/20">
           Отправить
         </button>
@@ -937,7 +973,7 @@
         title: 'Yandex Go',
         subtitle: 'Такси',
         category: 'Такси',
-        amount: -497.00,
+        amount: -597.00,
         balanceAfter: 9283.99,
         dateTime: '26 ноя 2026, 17:22',
         authCode: '764930',
@@ -952,8 +988,8 @@
           yMax: '2,46K',
           yMid: '1,23K',
           bars: [0, 0, 42, 54, 86, 100],
-          total6m: '6 140,00',
-          avgCheck: '219,00',
+          total6m: '6 240,00',
+          avgCheck: '229,00',
           novCount: '9 поездок'
         }
       },
@@ -963,7 +999,7 @@
         title: 'Yandex Go',
         subtitle: 'Такси',
         category: 'Такси',
-        amount: -263.00,
+        amount: -363.00,
         balanceAfter: 9780.99,
         dateTime: '26 ноя 2026, 15:40',
         authCode: '210899',
@@ -978,8 +1014,8 @@
           yMax: '2,17K',
           yMid: '1,08K',
           bars: [0, 0, 46, 58, 96, 88],
-          total6m: '5 643,00',
-          avgCheck: '209,00',
+          total6m: '5 743,00',
+          avgCheck: '219,00',
           novCount: '8 поездок'
         }
       },
@@ -1710,7 +1746,7 @@
       ctx.restore();
     }
 
-    function generateAndDownloadReceiptPdf() {
+    async function generateAndDownloadReceiptPdf() {
       if (!activeTransaction) return;
       const tx = activeTransaction;
       const absAmountDot = Math.abs(tx.amount).toFixed(2);
@@ -1721,6 +1757,10 @@
       const fileName = `receipt_${hashId}_ru_KG.pdf`;
 
       try {
+        if (document.fonts && document.fonts.ready) {
+          await document.fonts.ready;
+        }
+
         // High-DPI Canvas matching the exact Simbank PDF receipt layout
         const W = 1120;
         const H = 1480;
@@ -2004,15 +2044,47 @@
           { type: 'application/pdf' }
         );
 
+        const isStandalone =
+          window.matchMedia('(display-mode: standalone)').matches ||
+          window.navigator.standalone === true;
+
+        // 1. Prefer native Web Share API with File (works reliably inside Standalone PWA / WebAPK)
+        if (typeof File !== 'undefined' && navigator.share && navigator.canShare) {
+          const pdfFile = new File([pdfBlob], fileName, { type: 'application/pdf' });
+          if (navigator.canShare({ files: [pdfFile] })) {
+            try {
+              await navigator.share({
+                files: [pdfFile],
+                title: 'Квитанция Simbank',
+                text: `Квитанция об оплате ${absAmountDot} с (${tx.title})`
+              });
+              showToast(`Квитанция ${fileName} отправлена`);
+              return;
+            } catch (shareErr) {
+              if (shareErr && shareErr.name === 'AbortError') {
+                return;
+              }
+              // Fall back to direct file download if share failed
+            }
+          }
+        }
+
+        // 2. Standard browser download fallback (extended revoke timeout for Android DownloadManager)
         const pdfUrl = URL.createObjectURL(pdfBlob);
         const link = document.createElement('a');
         link.href = pdfUrl;
         link.download = fileName;
+        link.rel = 'noopener';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        setTimeout(() => URL.revokeObjectURL(pdfUrl), 2500);
 
+        // In restricted standalone WebViews where <a download> may be ignored, also open PDF viewer
+        if (isStandalone) {
+          window.open(pdfUrl, '_blank');
+        }
+
+        setTimeout(() => URL.revokeObjectURL(pdfUrl), 60000);
         showToast(`PDF-квитанция ${fileName} сформирована`);
       } catch (err) {
         showToast('Не удалось сформировать PDF');
