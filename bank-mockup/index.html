@@ -440,18 +440,6 @@
           </svg>
         </button>
 
-        <!-- Subtle Quick-Switcher between Home and Yandex Go Receipts -->
-        <div class="flex items-center gap-1 bg-[#1C1B1F]/90 border border-white/[0.08] rounded-full p-0.5 text-[11px]">
-          <button onclick="closeTransactionDetail()" class="pressable px-2.5 py-1 rounded-full text-[#88868E] hover:text-white transition-colors">
-            Главная
-          </button>
-          <button id="quickSwitch497" onclick="openTransactionDetail('tx-yest-5')" class="pressable px-2.5 py-1 rounded-full text-[#88868E] hover:text-white transition-colors">
-            -497 <span class="som-sm">с</span>
-          </button>
-          <button id="quickSwitch263" onclick="openTransactionDetail('tx-yest-6')" class="pressable px-2.5 py-1 rounded-full text-[#88868E] hover:text-white transition-colors">
-            -263 <span class="som-sm">с</span>
-          </button>
-        </div>
       </div>
 
       <!-- Scrollable Receipt Container -->
@@ -1102,29 +1090,6 @@
       if (!tx) return;
       activeTransaction = tx;
 
-      // Update Quick-Switcher active pill state & dynamic amounts
-      const pill497 = document.getElementById('quickSwitch497');
-      const pill263 = document.getElementById('quickSwitch263');
-      const tx497 = transactions.find(t => t.id === 'tx-yest-5');
-      const tx263 = transactions.find(t => t.id === 'tx-yest-6');
-
-      if (pill497 && tx497) {
-        const p497 = formatNumberParts(tx497.amount);
-        pill497.innerHTML = `${p497.sign}${p497.int} <span class="som-sm">с</span>`;
-        pill497.classList.toggle('bg-[#9E8DF2]', txId === 'tx-yest-5');
-        pill497.classList.toggle('text-[#111115]', txId === 'tx-yest-5');
-        pill497.classList.toggle('font-medium', txId === 'tx-yest-5');
-        pill497.classList.toggle('text-[#88868E]', txId !== 'tx-yest-5');
-      }
-
-      if (pill263 && tx263) {
-        const p263 = formatNumberParts(tx263.amount);
-        pill263.innerHTML = `${p263.sign}${p263.int} <span class="som-sm">с</span>`;
-        pill263.classList.toggle('bg-[#9E8DF2]', txId === 'tx-yest-6');
-        pill263.classList.toggle('text-[#111115]', txId === 'tx-yest-6');
-        pill263.classList.toggle('font-medium', txId === 'tx-yest-6');
-        pill263.classList.toggle('text-[#88868E]', txId !== 'tx-yest-6');
-      }
 
       // 68px Merchant Logo
       document.getElementById('detailMerchantLogo').innerHTML = renderIconSVG(tx.iconType, 'w-[68px] h-[68px]', 'w-8 h-8');
