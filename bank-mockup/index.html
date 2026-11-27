@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <link rel="manifest" href="manifest.webmanifest" /><link rel="icon" href="icon-192.png" /><link rel="apple-touch-icon" href="icon-192.png" /><meta name="theme-color" content="#000000" /><title>Мобильный банк — Главная</title>
+  <title>Мобильный банк — Главная</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter (Cyrillic subset) -->
+  <!-- Google Fonts: Roboto & Golos Text (Cyrillic subset matching Android / Simbank UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&subset=cyrillic&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Roboto:wght@400;500;700&subset=cyrillic&display=swap" rel="stylesheet" />
 
   <style>
     :root {
@@ -29,7 +29,7 @@
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", sans-serif;
+      font-family: 'Roboto', 'Golos Text', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     html, body {
@@ -188,6 +188,23 @@
       transform: translateX(0);
     }
 
+    /* Share Receipt Fullscreen View */
+    .receipt-share-screen {
+      position: absolute;
+      inset: 0;
+      background-color: #000000;
+      z-index: 48;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+
+    .receipt-share-screen.open {
+      transform: translateX(0);
+    }
+
     /* Bottom Sheet Modal Backdrop & Drawer */
     .modal-backdrop {
       position: absolute;
@@ -296,19 +313,17 @@
             <!-- QR Payment -->
             <button onclick="openActionModal('qr')" class="pressable flex flex-col items-center gap-2.5 group">
               <div class="w-[56px] h-[56px] rounded-full bg-[#9E8DF2] flex items-center justify-center shadow-lg shadow-[#9E8DF2]/15">
-                <svg class="w-6 h-6 text-[#111115]" viewBox="0 0 24 24" fill="currentColor">
-                  <!-- Top-left hollow finder square -->
-                  <path d="M3 3h7v7H3V3zm2 2v3h3V5H5z"/>
-                  <!-- Top-right hollow finder square -->
-                  <path d="M14 3h7v7h-7V3zm2 2v3h3V5h-3z"/>
-                  <!-- Bottom-left hollow finder square -->
-                  <path d="M3 14h7v7H3v-7zm2 2v3h3v-3H5z"/>
-                  <!-- Bottom-right QR data modules -->
-                  <rect x="14" y="14" width="2.5" height="2.5"/>
-                  <rect x="18.5" y="14" width="2.5" height="2.5"/>
-                  <rect x="16.25" y="16.25" width="2.5" height="2.5"/>
-                  <rect x="14" y="18.5" width="2.5" height="2.5"/>
-                  <rect x="18.5" y="18.5" width="2.5" height="2.5"/>
+                <svg class="w-[24px] h-[24px] text-[#111115]" viewBox="0 0 24 24" fill="currentColor">
+                  <!-- Top-left finder -->
+                  <path d="M3.5 3.5h6.5V10H3.5V3.5zm1.8 1.8v2.9h2.9V5.3H5.3z"/>
+                  <!-- Top-right finder -->
+                  <path d="M14 3.5h6.5V10H14V3.5zm1.8 1.8v2.9h2.9V5.3h-2.9z"/>
+                  <!-- Bottom-left finder -->
+                  <path d="M3.5 14H10v6.5H3.5V14zm1.8 1.8v2.9h2.9v-2.9H5.3z"/>
+                  <!-- Bottom-right modules matching screenshot -->
+                  <rect x="14" y="14" width="2.2" height="2.2"/>
+                  <rect x="18.3" y="14" width="2.2" height="4.4"/>
+                  <rect x="14" y="18.3" width="4.4" height="2.2"/>
                 </svg>
               </div>
               <span class="text-[12.5px] leading-[1.25] text-[#F2F1F5] text-center font-normal">Платеж<br/>по QR</span>
@@ -335,13 +350,13 @@
               СЕГОДНЯ, 17,00 <span class="som-sm">С</span>
             </div>
             <div class="flex items-center gap-4 text-[#7E7C84]">
-              <!-- Analytics Bar Icon (short, tallest, medium, short-medium) -->
+              <!-- Analytics Bar Icon (medium-short, tallest, medium, short) -->
               <button onclick="openAnalyticsModal()" class="pressable p-1 hover:text-white transition-colors" title="Аналитика расходов">
-                <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor">
-                  <rect x="3" y="13" width="2.4" height="7" rx="1.2"/>
-                  <rect x="8.5" y="4" width="2.4" height="16" rx="1.2"/>
-                  <rect x="14" y="8" width="2.4" height="12" rx="1.2"/>
-                  <rect x="19.5" y="11" width="2.4" height="9" rx="1.2"/>
+                <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="3" y="11" width="2.3" height="9" rx="1.15"/>
+                  <rect x="8.5" y="4" width="2.3" height="16" rx="1.15"/>
+                  <rect x="14" y="9" width="2.3" height="11" rx="1.15"/>
+                  <rect x="19.5" y="13" width="2.3" height="7" rx="1.15"/>
                 </svg>
               </button>
               <!-- Search Magnifying Glass Icon -->
@@ -388,42 +403,42 @@
     <!-- ==================== FLOATING PILL BOTTOM NAVIGATION BAR ==================== -->
     <div id="bottomNavWrapper" class="absolute bottom-7 left-0 right-0 px-4 z-30 pointer-events-none">
       <nav class="floating-nav rounded-full p-1.5 flex items-center justify-between pointer-events-auto">
-        <!-- Tab 1: Главная (Solid house with pitched roof & doorway cutout) -->
+        <!-- Tab 1: Главная (Solid house with pitched roof & arched doorway cutout) -->
         <button onclick="switchBottomTab('home')" data-tab="home" class="nav-btn nav-pill-active flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#9E8DF2] transition-all">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 3.2L3.5 10.3c-.3.25-.5.63-.5 1.03V19.5A1.5 1.5 0 004.5 21h4.75v-5.25a1.25 1.25 0 011.25-1.25h3a1.25 1.25 0 011.25 1.25V21h4.75a1.5 1.5 0 001.5-1.5v-8.17c0-.4-.2-.78-.5-1.03L12 3.2z"/>
+          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3.3L3.6 10.2c-.38.31-.6.77-.6 1.26V19a1.8 1.8 0 001.8 1.8h4.4v-4.6a2.8 2.8 0 015.6 0v4.6h4.4A1.8 1.8 0 0021 19v-7.54c0-.49-.22-.95-.6-1.26L12 3.3z"/>
           </svg>
           <span class="text-[10px] font-medium leading-tight">Главная</span>
         </button>
 
-        <!-- Tab 2: Платежи (Solid white wallet with right-side clasp notch and dark dot) -->
+        <!-- Tab 2: Платежи (Solid white wallet with folded top edge & right clasp with dark dot) -->
         <button onclick="switchBottomTab('payments')" data-tab="payments" class="nav-btn flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#F2F2F5] transition-all">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.5 4.5h11A2.5 2.5 0 0119 7v.5H5.5a1 1 0 010-2H17V5H5.5a2.5 2.5 0 00-2.5 2.5v9A2.5 2.5 0 005.5 19h13a2.5 2.5 0 002.5-2.5v-6A2.5 2.5 0 0018.5 8h-13A2.5 2.5 0 013 5.5v2A2.5 2.5 0 015.5 4.5zm11.25 7.25a1.25 1.25 0 100 2.5h2.75v-2.5h-2.75z"/>
+          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M5.5 4.8L16.8 3.6c.9-.1 1.7.6 1.7 1.5V6.5H6a1.5 1.5 0 00-1.5 1.5v.2A2.5 2.5 0 016 7.7h12.5A2.5 2.5 0 0121 10.2v6.6a2.5 2.5 0 01-2.5 2.5H6a2.5 2.5 0 01-2.5-2.5V7.3c0-1.3.9-2.3 2-2.5zM17.2 12.2a1.3 1.3 0 100 2.6 1.3 1.3 0 000-2.6z"/>
           </svg>
           <span class="text-[10px] font-medium leading-tight">Платежи</span>
         </button>
 
-        <!-- Tab 3: Кредиты (Solid white circle with top-right 90° wedge 12-to-3 o'clock cut out) -->
+        <!-- Tab 3: Кредиты (Solid white circle with top-right 90° wedge cut out) -->
         <button onclick="switchBottomTab('credits')" data-tab="credits" class="nav-btn flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#F2F2F5] transition-all">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 3.5a8.5 8.5 0 108.5 8.5H12V3.5z"/>
           </svg>
           <span class="text-[10px] font-medium leading-tight">Кредиты</span>
         </button>
 
-        <!-- Tab 4: Накопле... (Solid white rounded-square safe with central dark ring dial & two bottom feet) -->
+        <!-- Tab 4: Накопле... (Solid white rounded-square safe with central ring dial & two bottom feet) -->
         <button onclick="switchBottomTab('savings')" data-tab="savings" class="nav-btn flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#F2F2F5] transition-all">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 4h11A2.5 2.5 0 0120 6.5v10a2.5 2.5 0 01-2.5 2.5H17v1.2a.8.8 0 01-1.6 0V19H8.6v1.2a.8.8 0 01-1.6 0V19h-.5A2.5 2.5 0 014 16.5v-10A2.5 2.5 0 016.5 4zm5.5 4.2a3.3 3.3 0 100 6.6 3.3 3.3 0 000-6.6zm0 1.8a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/>
+          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.2 4h11.6A2.2 2.2 0 0120 6.2v10.4a2.2 2.2 0 01-2.2 2.2H17v1.1a.9.9 0 01-1.8 0v-1.1H8.8v1.1a.9.9 0 01-1.8 0v-1.1h-.8A2.2 2.2 0 014 16.6V6.2A2.2 2.2 0 016.2 4zm5.8 3.9a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm0 2a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/>
           </svg>
           <span class="text-[10px] font-medium leading-tight">Накопле...</span>
         </button>
 
-        <!-- Tab 5: Ещё (3 stacked horizontal rounded bars ≡) -->
+        <!-- Tab 5: Ещё (3 left-aligned horizontal bars descending in length) -->
         <button onclick="switchBottomTab('more')" data-tab="more" class="nav-btn flex-1 py-1.5 px-1 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#F2F2F5] transition-all">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-            <path d="M4.5 7.5h15M4.5 12h11.5M4.5 16.5h8"/>
+          <svg class="w-[21px] h-[21px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round">
+            <path d="M4.5 7.5h15M4.5 12h11M4.5 16.5h7.5"/>
           </svg>
           <span class="text-[10px] font-medium leading-tight">Ещё</span>
         </button>
@@ -432,14 +447,13 @@
 
     <!-- ==================== TRANSACTION DETAIL / RECEIPT SCREEN ==================== -->
     <div id="detailScreen" class="detail-screen">
-      <!-- Top Bar with Lavender Back Arrow & Subtle Quick-Switcher -->
-      <div class="px-4 pt-4 pb-1 flex items-center justify-between shrink-0 bg-[#0B0B0D]">
+      <!-- Top Bar with Lavender Back Arrow -->
+      <div class="px-4 pt-4 pb-1 flex items-center shrink-0 bg-[#0B0B0D]">
         <button onclick="closeTransactionDetail()" class="pressable p-2 -ml-1 text-[#9E8DF2] rounded-full hover:bg-white/5" aria-label="Назад">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M11 18l-6-6 6-6"/>
           </svg>
         </button>
-
       </div>
 
       <!-- Scrollable Receipt Container -->
@@ -556,35 +570,35 @@
 
           <!-- Action Rows with Lavender Icons (#9E8DF2) -->
           <div class="divide-y divide-[#2E2D33] mb-5">
-            <!-- Share Receipt (3-node connected share icon) -->
-            <button onclick="openReceiptShareModal()" class="pressable w-full py-4 flex items-center gap-4 text-left">
-              <svg class="w-5 h-5 text-[#9E8DF2] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="18" cy="5" r="2.8"/>
-                <circle cx="6" cy="12" r="2.8"/>
-                <circle cx="18" cy="19" r="2.8"/>
-                <line x1="8.5" y1="13.4" x2="15.5" y2="17.6"/>
-                <line x1="15.5" y1="6.4" x2="8.5" y2="10.6"/>
+            <!-- Share Receipt (3 solid filled nodes connected by lines) -->
+            <button onclick="openReceiptShareScreen()" class="pressable w-full py-4 flex items-center gap-4 text-left">
+              <svg class="w-[21px] h-[21px] text-[#9E8DF2] shrink-0" viewBox="0 0 24 24" fill="none">
+                <line x1="8.2" y1="13.2" x2="15.8" y2="17.8" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+                <line x1="15.8" y1="6.2" x2="8.2" y2="10.8" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+                <circle cx="17.5" cy="5.2" r="3" fill="currentColor"/>
+                <circle cx="6.5" cy="12" r="3" fill="currentColor"/>
+                <circle cx="17.5" cy="18.8" r="3" fill="currentColor"/>
               </svg>
               <span class="text-[15.5px] text-[#F2F1F5]">Поделиться квитанцией</span>
             </button>
 
-            <!-- Split Bill (two-person outline icon: foreground person + offset background person) -->
+            <!-- Split Bill (two-person outline icon with rounded capsule shoulders) -->
             <button onclick="openSplitBillModal()" class="pressable w-full py-4 flex items-center gap-4 text-left">
-              <svg class="w-5 h-5 text-[#9E8DF2] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9.5" cy="7.5" r="3.2"/>
-                <path d="M3.5 19.5c0-3 2.6-5.2 6-5.2s6 2.2 6 5.2"/>
-                <circle cx="16.2" cy="8.5" r="2.5"/>
-                <path d="M16.5 14.5c2.4.3 4.2 2 4.2 4.5"/>
+              <svg class="w-[22px] h-[22px] text-[#9E8DF2] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9.2" cy="7.5" r="3"/>
+                <rect x="3" y="13.5" width="12.4" height="5.8" rx="2.9"/>
+                <circle cx="16.2" cy="8.2" r="2.5"/>
+                <path d="M16.6 13.8h1.5a2.6 2.6 0 012.6 2.6v0a2.6 2.6 0 01-2.6 2.6h-1.2"/>
               </svg>
               <span class="text-[15.5px] text-[#F2F1F5]">Разделить платеж с друзьями</span>
             </button>
 
-            <!-- Ask Question (circle outline with ? inside) -->
+            <!-- Ask Question (thin-medium circle outline with ? inside) -->
             <button onclick="openSupportModal()" class="pressable w-full py-4 flex items-center gap-4 text-left">
-              <svg class="w-5 h-5 text-[#9E8DF2] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="w-[21px] h-[21px] text-[#9E8DF2] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="9"/>
-                <path d="M9.4 9.2a2.7 2.7 0 0 1 5.2.9c0 1.8-2.6 2.5-2.6 2.5"/>
-                <circle cx="12" cy="16.8" r="0.8" fill="currentColor" stroke="none"/>
+                <path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.8c0 1.6-2.4 2.3-2.4 2.3"/>
+                <circle cx="12" cy="16.4" r="0.85" fill="currentColor" stroke="none"/>
               </svg>
               <span class="text-[15.5px] text-[#F2F1F5]">Задать вопрос</span>
             </button>
@@ -599,52 +613,193 @@
       </div>
     </div>
 
-    <!-- ==================== MODAL DRAWER (Actions / Receipt / Split / Analytics / Card) ==================== -->
+    <!-- ==================== SHARE RECEIPT SCREEN ('Поделиться квитанцией') ==================== -->
+    <div id="receiptShareScreen" class="receipt-share-screen">
+      <!-- Top Back Bar -->
+      <div class="px-4 pt-4 pb-1 flex items-center shrink-0">
+        <button onclick="closeReceiptShareScreen()" class="pressable p-2 -ml-1 text-[#9E8DF2] rounded-full hover:bg-white/5" aria-label="Назад">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M11 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Screen Title -->
+      <div class="px-5 pt-1 pb-4 shrink-0">
+        <h1 class="text-[26px] font-normal text-white tracking-[-0.01em] leading-tight">Поделиться квитанцией</h1>
+      </div>
+
+      <!-- Scrollable Paper Receipt Preview -->
+      <div class="flex-1 overflow-y-auto no-scrollbar px-5 pb-4 flex flex-col">
+        <div class="w-full relative">
+          <!-- Receipt Body (#F3F4F8) -->
+          <div id="simbaReceiptCard" class="bg-[#F3F4F8] rounded-t-[14px] px-5 pt-6 pb-11 text-[#18191D] relative overflow-hidden shadow-2xl">
+            <!-- Header Row: Amount + Status on Left, Black Simba Circle on Right -->
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <div id="shareReceiptAmount" class="text-[31px] font-bold leading-none tracking-[-0.02em] text-[#111215]">
+                  497.00 <span class="som">с</span>
+                </div>
+                <div class="flex items-center gap-2 mt-2.5">
+                  <!-- Exact Samsung/OneUI Glossy Green Checkmark Badge -->
+                  <svg class="w-[19px] h-[19px] shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="checkBadgeGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#19C72B"/>
+                        <stop offset="55%" stop-color="#0FB421"/>
+                        <stop offset="100%" stop-color="#099B19"/>
+                      </linearGradient>
+                      <linearGradient id="checkTopGloss" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.62"/>
+                        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.06"/>
+                      </linearGradient>
+                    </defs>
+                    <rect x="1.5" y="1.5" width="21" height="21" rx="5.2" fill="url(#checkBadgeGrad)" stroke="#2B8E35" stroke-width="1.2"/>
+                    <rect x="3.2" y="2.8" width="17.6" height="4.8" rx="2.4" fill="url(#checkTopGloss)"/>
+                    <path d="M6.1 13.5L10.4 18.6L18.1 8.9L16.5 7.6L10.3 15.2L7.6 12.1Z" fill="#05550E" fill-opacity="0.32"/>
+                    <path d="M6.1 12.8L10.4 17.9L18.1 8.2L16.5 6.9L10.3 14.5L7.6 11.4Z" fill="#FFFFFF"/>
+                  </svg>
+                  <span class="text-[13.5px] font-normal text-[#1E1F24]">Платеж прошел успешно</span>
+                </div>
+              </div>
+
+              <!-- Black Simba Circle Logo (Geometric single-storey 'a' & round 'i' dot) -->
+              <div class="w-[66px] h-[66px] rounded-full bg-black flex items-center justify-center shrink-0">
+                <svg viewBox="0 0 132 132" class="w-full h-full block" aria-label="Simba">
+                  <path d="M 33.8 54.6 C 33.4 52.1 30.8 50.8 27.3 50.8 C 23.6 50.8 21.0 52.5 21.0 55.2 C 21.0 58.0 23.8 59.3 27.6 60.2 C 31.8 61.2 34.5 62.7 34.5 66.1 C 34.5 69.4 31.6 71.5 27.4 71.5 C 23.3 71.5 20.6 69.6 20.4 66.7" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round"/>
+                  <circle cx="41.5" cy="50.4" r="2.5" fill="#FFFFFF"/>
+                  <line x1="41.5" y1="57.2" x2="41.5" y2="71.5" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round"/>
+                  <path d="M 49.5 71.5 V 62.5 C 49.5 59.0 51.8 56.8 55.2 56.8 C 58.6 56.8 61.2 59.0 61.2 62.5 V 71.5 M 61.2 62.5 C 61.2 59.0 63.6 56.8 67.0 56.8 C 70.4 56.8 72.8 59.0 72.8 62.5 V 71.5" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="80.5" y1="49.5" x2="80.5" y2="71.5" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round"/>
+                  <circle cx="88.0" cy="64.2" r="7.3" fill="none" stroke="#FFFFFF" stroke-width="4.2"/>
+                  <circle cx="108.0" cy="64.2" r="7.3" fill="none" stroke="#FFFFFF" stroke-width="4.2"/>
+                  <line x1="115.3" y1="57.0" x2="115.3" y2="71.5" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Horizontal Divider -->
+            <div class="h-px bg-[#D7D9E0] my-5"></div>
+
+            <!-- Receipt Key-Value Rows -->
+            <div class="space-y-4 text-[13.5px] leading-[1.35] relative z-10">
+              <div class="grid grid-cols-[44%_56%] items-start">
+                <span class="text-[#7E818A]">Получатель</span>
+                <span id="shareReceiptRecipient" class="text-[#18191D] font-normal">Yandex Go</span>
+              </div>
+
+              <div class="grid grid-cols-[44%_56%] items-start">
+                <span class="text-[#7E818A]">Аккаунт</span>
+                <span class="text-[#18191D] font-normal">Simbank</span>
+              </div>
+
+              <div class="grid grid-cols-[44%_56%] items-start">
+                <div class="text-[#7E818A]">
+                  <div>Отправитель</div>
+                  <div>Аккаунт</div>
+                </div>
+                <div class="text-[#18191D] font-normal">
+                  <div>Данислам С***</div>
+                  <div>*3687 | Simbank</div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-[44%_56%] items-start">
+                <div class="text-[#7E818A]">
+                  <div>Код авторизации</div>
+                  <div>RRN</div>
+                </div>
+                <div class="text-[#18191D] font-normal">
+                  <div id="shareReceiptAuthCode">764930</div>
+                  <div id="shareReceiptRrn">633017478556</div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-[44%_56%] items-start">
+                <div class="text-[#7E818A]">
+                  <div>Сумма</div>
+                  <div>Плата за кредит</div>
+                </div>
+                <div class="text-[#18191D] font-normal">
+                  <div id="shareReceiptRowAmount">497.00 <span class="som-sm">с</span></div>
+                  <div>0.00 <span class="som-sm">с</span></div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-[44%_56%] items-start pt-1">
+                <span class="text-[#7E818A]">Дата</span>
+                <span id="shareReceiptDate" class="text-[#18191D] font-normal">17:22 26.11.2026</span>
+              </div>
+            </div>
+
+            <!-- Blue Circular Bank Stamp Overlapping Date Row -->
+            <div class="w-[138px] h-[138px] pointer-events-none select-none ml-auto -mt-5 -mr-1 relative z-20">
+              <svg viewBox="0 0 200 200" class="w-full h-full">
+                <defs>
+                  <path id="stampTextCircle" d="M 100,100 m -74,0 a 74,74 0 1,1 148,0 a 74,74 0 1,1 -148,0" />
+                </defs>
+                <circle cx="100" cy="100" r="91" fill="none" stroke="#2468D8" stroke-width="2.6" />
+                <circle cx="100" cy="100" r="85" fill="none" stroke="#2468D8" stroke-width="1.3" />
+                <circle cx="100" cy="100" r="61" fill="none" stroke="#2468D8" stroke-width="1.5" />
+                <text fill="#2468D8" font-size="11.2" font-weight="600" letter-spacing="0.6">
+                  <textPath href="#stampTextCircle" startOffset="0%">
+                    ОАО "Дос-Кредобанк" • ОАО "Дос-Кредобанк" • ОАО "Дос-Кредобанк" •
+                  </textPath>
+                </text>
+                <g transform="rotate(-17 100 100)">
+                  <text x="100" y="108" text-anchor="middle" fill="#2468D8" font-size="25" font-weight="700" letter-spacing="-0.3">Simbank</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Serrated Zig-Zag Paper Bottom Edge -->
+          <div class="w-full h-[10px] overflow-hidden -mt-[1px]">
+            <svg class="w-full h-full block" viewBox="0 0 360 10" preserveAspectRatio="none">
+              <polygon fill="#F3F4F8" points="0,0 360,0 360,2 351,10 342,2 333,10 324,2 315,10 306,2 297,10 288,2 279,10 270,2 261,10 252,2 243,10 234,2 225,10 216,2 207,10 198,2 189,10 180,2 171,10 162,2 153,10 144,2 135,10 126,2 117,10 108,2 99,10 90,2 81,10 72,2 63,10 54,2 45,10 36,2 27,10 18,2 9,10 0,2" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Lavender 'Отправить' Button -->
+      <div class="px-5 pt-2 pb-6 shrink-0 bg-black">
+        <button onclick="generateAndDownloadReceiptPdf()" class="pressable w-full py-4 rounded-full bg-[#9E8DF2] text-[#111115] font-medium text-[16px] shadow-lg shadow-[#9E8DF2]/20">
+          Отправить
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL BOTTOM SHEET ==================== -->
     <div id="modalBackdrop" class="modal-backdrop" onclick="handleBackdropClick(event)">
-      <div class="modal-sheet" onclick="event.stopPropagation()">
+      <div class="modal-sheet">
         <div class="w-10 h-1 rounded-full bg-white/20 mx-auto mb-4"></div>
         <div id="modalContent"></div>
       </div>
     </div>
 
     <!-- ==================== TOAST NOTIFICATION ==================== -->
-    <div id="toastNotification" class="fixed top-5 left-1/2 -translate-x-1/2 z-[70] bg-[#2C2B33] text-white text-[13px] font-medium px-4 py-2.5 rounded-full border border-white/15 shadow-xl opacity-0 pointer-events-none transition-all duration-200 flex items-center gap-2 whitespace-nowrap">
-      <span class="w-2 h-2 rounded-full bg-[#9580E8]"></span>
-      <span id="toastText">Готово</span>
+    <div id="toastNotification" class="pointer-events-none absolute top-4 left-1/2 -translate-x-1/2 z-[70] opacity-0 -translate-y-1 transition-all duration-200">
+      <div id="toastText" class="bg-[#2C2B33] text-white text-[13px] font-medium px-4 py-2.5 rounded-full shadow-xl border border-white/10 whitespace-nowrap">
+        Готово
+      </div>
     </div>
-
-    <!-- ==================== ANDROID SYSTEM GESTURE / NAVIGATION BAR ==================== -->
-    <footer class="w-full h-[36px] bg-[#09080C] border-t border-white/[0.04] flex items-center justify-around px-10 shrink-0 z-50 select-none">
-      <!-- Recents (Three vertical bars) -->
-      <button onclick="showToast('Список недавних приложений')" class="pressable p-2 text-white/70 hover:text-white" aria-label="Недавние">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M5 7h14M5 12h14M5 17h14"/>
-        </svg>
-      </button>
-      <!-- Home (Rounded Square) -->
-      <button onclick="handleSystemHome()" class="pressable p-2 text-white/70 hover:text-white" aria-label="Домой">
-        <span class="block w-[14px] h-[14px] rounded-[4px] border-[1.8px] border-current"></span>
-      </button>
-      <!-- Back (<) -->
-      <button onclick="handleSystemBack()" class="pressable p-2 text-white/70 hover:text-white" aria-label="Назад">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M15 18l-6-6 6-6"/>
-        </svg>
-      </button>
-    </footer>
   </div>
 
   <script>
     // ==================== STATE & DATA ====================
     const accounts = [
-      { id: 0, title: 'Накопительный счёт', balance: 45200.00 },
-      { id: 1, title: 'Карта VISA Gold', balance: 12450.50 },
-      { id: 2, title: '', balance: 8680.99 } // Active 3rd dot default
+      { id: 'acc-1', title: 'Накопительный счет', balance: 45200.00 },
+      { id: 'acc-2', title: 'Долларовый счет', balance: 12450.50 },
+      { id: 'acc-3', title: '', balance: 8680.99 }
     ];
-    let currentAccountIdx = 2;
+    let currentAccountIndex = 2;
+    let activeTransaction = null;
+    let isEditingAmount = false;
+    let editAmountSign = -1;
+    let chartSlideIndex = 0;
 
-    // Exact transactions matching the screenshots (Yesterday sums to 2 163,00 с̲)
-    let transactions = [
+    const transactions = [
       {
         id: 'tx-today-1',
         group: 'today',
@@ -654,18 +809,21 @@
         amount: -17.00,
         balanceAfter: 8680.99,
         dateTime: '27 ноя 2026, 09:14',
+        authCode: '482910',
+        rrn: '633109142281',
+        receiptHash: '6b091204daa5674f0c76a11b',
         iconType: 'bus',
-        mcc: 'MCC 4111',
-        merchantCode: 'QR-PAY BISHKEK',
+        mcc: 'MCC 4131',
+        merchantCode: 'TULPAR QR 250',
         note: '',
         chart: {
-          title: 'Общественный транспорт',
-          yMax: '680',
-          yMid: '340',
-          bars: [22, 35, 58, 72, 95, 64],
-          total6m: '2 414,00',
+          title: 'Покупка по QR - 250',
+          yMax: '600',
+          yMid: '300',
+          bars: [25, 40, 35, 50, 65, 58],
+          total6m: '1 428,00',
           avgCheck: '17,00',
-          novCount: '24 поездки'
+          novCount: '18 поездок'
         }
       },
       {
@@ -676,7 +834,10 @@
         category: 'Развлечения и спорт',
         amount: -63.00,
         balanceAfter: 8697.99,
-        dateTime: '26 ноя 2026, 21:05',
+        dateTime: '26 ноя 2026, 21:08',
+        authCode: '591024',
+        rrn: '633021084912',
+        receiptHash: '6b08912fdaa5674f0c76a32c',
         iconType: 'yandex',
         mcc: 'MCC 7999',
         merchantCode: 'YANDEX.GO',
@@ -685,10 +846,10 @@
           title: 'Yandex Go',
           yMax: '2,46K',
           yMid: '1,23K',
-          bars: [0, 0, 40, 52, 86, 98],
-          total6m: '6 840,00',
-          avgCheck: '285,00',
-          novCount: '9 операций'
+          bars: [0, 0, 42, 54, 86, 100],
+          total6m: '6 140,00',
+          avgCheck: '219,00',
+          novCount: '9 поездок'
         }
       },
       {
@@ -699,7 +860,10 @@
         category: 'Развлечения и спорт',
         amount: -6.00,
         balanceAfter: 8760.99,
-        dateTime: '26 ноя 2026, 20:58',
+        dateTime: '26 ноя 2026, 20:45',
+        authCode: '590881',
+        rrn: '633020451109',
+        receiptHash: '6b08843fdaa5674f0c76a44d',
         iconType: 'yandex',
         mcc: 'MCC 7999',
         merchantCode: 'YANDEX.GO',
@@ -708,10 +872,10 @@
           title: 'Yandex Go',
           yMax: '2,46K',
           yMid: '1,23K',
-          bars: [0, 0, 40, 52, 86, 98],
-          total6m: '6 840,00',
-          avgCheck: '285,00',
-          novCount: '9 операций'
+          bars: [0, 0, 42, 54, 86, 100],
+          total6m: '6 140,00',
+          avgCheck: '219,00',
+          novCount: '9 поездок'
         }
       },
       {
@@ -723,19 +887,22 @@
         category: 'Перевод на карту',
         amount: -500.00,
         balanceAfter: 8766.99,
-        dateTime: '26 ноя 2026, 19:12',
+        dateTime: '26 ноя 2026, 19:30',
+        authCode: '842109',
+        rrn: '633019308841',
+        receiptHash: '6b08551fdaa5674f0c76a55e',
         iconType: 'transfer',
-        mcc: 'P2P TRANSFER',
+        mcc: 'MCC 4829',
         merchantCode: 'ELDIK BANK P2P',
         note: '',
         chart: {
           title: 'ИРИНА С.',
-          yMax: '3,00K',
-          yMid: '1,50K',
-          bars: [30, 0, 65, 45, 80, 55],
-          total6m: '7 500,00',
-          avgCheck: '1 250,00',
-          novCount: '2 перевода'
+          yMax: '2,00K',
+          yMid: '1,00K',
+          bars: [0, 30, 0, 50, 40, 75],
+          total6m: '3 500,00',
+          avgCheck: '700,00',
+          novCount: '3 перевода'
         }
       },
       {
@@ -746,19 +913,22 @@
         category: 'Общественный транспорт',
         amount: -17.00,
         balanceAfter: 9266.99,
-        dateTime: '26 ноя 2026, 18:30',
+        dateTime: '26 ноя 2026, 18:12',
+        authCode: '319402',
+        rrn: '633018125530',
+        receiptHash: '6b08319fdaa5674f0c76a66f',
         iconType: 'bus',
-        mcc: 'MCC 4111',
-        merchantCode: 'QR-PAY BISHKEK',
+        mcc: 'MCC 4131',
+        merchantCode: 'TULPAR QR 816',
         note: '',
         chart: {
-          title: 'Общественный транспорт',
-          yMax: '680',
-          yMid: '340',
-          bars: [22, 35, 58, 72, 95, 64],
-          total6m: '2 414,00',
+          title: 'Покупка по QR - 816',
+          yMax: '600',
+          yMid: '300',
+          bars: [20, 35, 30, 45, 60, 55],
+          total6m: '1 360,00',
           avgCheck: '17,00',
-          novCount: '24 поездки'
+          novCount: '16 поездок'
         }
       },
       {
@@ -770,6 +940,9 @@
         amount: -497.00,
         balanceAfter: 9283.99,
         dateTime: '26 ноя 2026, 17:22',
+        authCode: '764930',
+        rrn: '633017478556',
+        receiptHash: '6b08168fdaa5674f0c76a19e',
         iconType: 'yandex',
         mcc: 'MCC 4121',
         merchantCode: 'YANDEX.GO',
@@ -778,10 +951,10 @@
           title: 'Yandex Go',
           yMax: '2,46K',
           yMid: '1,23K',
-          bars: [0, 0, 40, 52, 86, 98],
-          total6m: '6 840,00',
-          avgCheck: '310,00',
-          novCount: '8 поездок'
+          bars: [0, 0, 42, 54, 86, 100],
+          total6m: '6 140,00',
+          avgCheck: '219,00',
+          novCount: '9 поездок'
         }
       },
       {
@@ -793,6 +966,9 @@
         amount: -263.00,
         balanceAfter: 9780.99,
         dateTime: '26 ноя 2026, 15:40',
+        authCode: '210899',
+        rrn: '633015459819',
+        receiptHash: '6b07fea5daa5674f0c76761e',
         iconType: 'yandex',
         mcc: 'MCC 4121',
         merchantCode: 'YANDEX.GO',
@@ -801,153 +977,135 @@
           title: 'Yandex Go',
           yMax: '2,17K',
           yMid: '1,08K',
-          bars: [0, 0, 44, 56, 96, 86],
-          total6m: '6 343,00',
-          avgCheck: '295,00',
-          novCount: '7 поездок'
+          bars: [0, 0, 46, 58, 96, 88],
+          total6m: '5 643,00',
+          avgCheck: '209,00',
+          novCount: '8 поездок'
         }
       },
       {
         id: 'tx-yest-7',
         group: 'yesterday',
         title: 'Алтынай И.',
-        subtitle: 'Покупка по QR - 1607',
-        category: 'Покупка по QR',
+        bankName: 'ELQR',
+        subtitle: 'Перевод по QR',
+        category: 'Перевод по QR',
         amount: -817.00,
         balanceAfter: 10043.99,
-        dateTime: '26 ноя 2026, 12:15',
-        iconType: 'qrUser',
-        mcc: 'QR PAYMENT',
-        merchantCode: 'QR-PAY 1607',
+        dateTime: '26 ноя 2026, 13:15',
+        authCode: '119402',
+        rrn: '633013159901',
+        receiptHash: '6b07aa1fdaa5674f0c76a88a',
+        iconType: 'transfer',
+        mcc: 'MCC 4829',
+        merchantCode: 'ELQR TRANSFER',
         note: '',
         chart: {
           title: 'Алтынай И.',
-          yMax: '1,63K',
-          yMid: '817',
-          bars: [0, 25, 0, 60, 40, 96],
-          total6m: '2 450,00',
-          avgCheck: '612,50',
-          novCount: '2 платежа'
+          yMax: '1,50K',
+          yMid: '750',
+          bars: [0, 0, 20, 40, 35, 65],
+          total6m: '2 150,00',
+          avgCheck: '537,00',
+          novCount: '2 перевода'
         }
       }
     ];
 
-    let activeTransaction = null;
-    let currentChartSlide = 0;
-    let isHeaderCollapsed = false;
-    let editSignMultiplier = -1;
+    // ==================== FORMATTING & ICON HELPERS ====================
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
 
-    // Load persisted notes and edited transaction amounts safely
-    try {
-      const savedNotes = JSON.parse(localStorage.getItem('kg_bank_notes') || '{}');
-      const savedEdits = JSON.parse(localStorage.getItem('kg_bank_tx_edits') || '{}');
-      let totalBalanceDelta = 0;
-
-      transactions.forEach(tx => {
-        if (savedNotes[tx.id]) tx.note = savedNotes[tx.id];
-        if (savedEdits[tx.id] && typeof savedEdits[tx.id].amount === 'number') {
-          totalBalanceDelta += (savedEdits[tx.id].amount - tx.amount);
-          tx.amount = savedEdits[tx.id].amount;
-          if (typeof savedEdits[tx.id].balanceAfter === 'number') {
-            tx.balanceAfter = savedEdits[tx.id].balanceAfter;
-          }
-        }
-      });
-
-      if (totalBalanceDelta !== 0) {
-        accounts[2].balance = +(accounts[2].balance + totalBalanceDelta).toFixed(2);
-      }
-    } catch (e) {}
-
-    // ==================== FORMATTING HELPERS ====================
-    function formatNumberParts(value) {
-      const abs = Math.abs(value);
-      const fixed = abs.toFixed(2);
-      const [intRaw, fracRaw] = fixed.split('.');
-      const intFormatted = intRaw.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    function formatNumberParts(num) {
+      const absVal = Math.abs(Number(num) || 0);
+      const fixed = absVal.toFixed(2);
+      const [intPart, fracPart] = fixed.split('.');
+      const intStr = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
       return {
-        sign: value < 0 ? '-' : '',
-        int: intFormatted,
-        frac: ',' + fracRaw
+        sign: num < 0 ? '−' : (num > 0 ? '+' : ''),
+        intStr,
+        fracStr: ',' + fracPart
       };
     }
 
-    function formatSomInline(value) {
-      const parts = formatNumberParts(value);
-      return `${parts.sign}${parts.int}${parts.frac} <span class="som-sm">с</span>`;
+    function formatSomInline(num) {
+      const { intStr, fracStr } = formatNumberParts(num);
+      return `${intStr}${fracStr} <span class="som-sm">с</span>`;
     }
 
-    function renderIconSVG(type, sizeClass = 'w-[44px] h-[44px]', iconInnerClass = 'w-6 h-6') {
-      if (type === 'yandex') {
-        // Exact Yandex Go tri-color circle (top yellow #FCD535, bottom-left white #FFFFFF, bottom-right black #000000)
+    function getTransactionIconHtml(tx, size = 44) {
+      const dim = `w-[${size}px] h-[${size}px]`;
+      if (tx.iconType === 'yandex') {
         return `
-          <div class="${sizeClass} rounded-full overflow-hidden shrink-0 shadow-sm border border-white/10">
-            <svg viewBox="0 0 68 68" class="w-full h-full block">
-              <rect x="0" y="0" width="68" height="34" fill="#FCD535"/>
-              <rect x="0" y="34" width="34" height="34" fill="#FFFFFF"/>
-              <rect x="34" y="34" width="34" height="34" fill="#000000"/>
+          <div style="width:${size}px;height:${size}px" class="rounded-full overflow-hidden shrink-0">
+            <svg viewBox="0 0 64 64" class="w-full h-full block">
+              <path d="M0 32 A32 32 0 0 1 64 32 Z" fill="#FCD535"/>
+              <path d="M0 32 L32 32 L32 64 A32 32 0 0 1 0 32 Z" fill="#FFFFFF"/>
+              <path d="M32 32 L64 32 A32 32 0 0 1 32 64 Z" fill="#000000"/>
             </svg>
           </div>
         `;
       }
-      if (type === 'bus') {
-        // 44px blue circle (#4D8AF0) containing front-facing dark (#111318) bus silhouette with side mirrors,
-        // large rounded rectangular windshield cutout, two round headlights cutout, and two bottom wheel tabs
+      if (tx.iconType === 'bus') {
+        const iconSize = Math.round(size * 0.52);
         return `
-          <div class="${sizeClass} rounded-full bg-[#4D8AF0] flex items-center justify-center shrink-0">
-            <svg class="${iconInnerClass}" viewBox="0 0 44 44" fill="none">
-              <!-- Side mirrors -->
-              <rect x="9.5" y="15.5" width="2.5" height="5" rx="1.2" fill="#111318"/>
-              <rect x="32" y="15.5" width="2.5" height="5" rx="1.2" fill="#111318"/>
-              <!-- Main bus body -->
-              <rect x="12.5" y="11" width="19" height="19.5" rx="4" fill="#111318"/>
-              <!-- Bottom wheel tabs -->
-              <path d="M14.5 30.5h3.5v2.2a1.3 1.3 0 01-1.3 1.3h-.9a1.3 1.3 0 01-1.3-1.3v-2.2z" fill="#111318"/>
-              <path d="M26 30.5h3.5v2.2a1.3 1.3 0 01-1.3 1.3h-.9a1.3 1.3 0 01-1.3-1.3v-2.2z" fill="#111318"/>
-              <!-- Large rounded rectangular windshield cutout -->
-              <rect x="14.8" y="14" width="14.4" height="9" rx="2" fill="#4D8AF0"/>
-              <!-- Two round headlights cutout -->
-              <circle cx="16.5" cy="26.5" r="1.5" fill="#4D8AF0"/>
-              <circle cx="27.5" cy="26.5" r="1.5" fill="#4D8AF0"/>
+          <div style="width:${size}px;height:${size}px" class="rounded-full bg-[#4D8AF0] flex items-center justify-center shrink-0">
+            <svg style="width:${iconSize}px;height:${iconSize}px" viewBox="0 0 24 24" fill="#13161C">
+              <rect x="2" y="7" width="1.6" height="4" rx="0.8"/>
+              <rect x="20.4" y="7" width="1.6" height="4" rx="0.8"/>
+              <path d="M6.5 3.5h11A2.5 2.5 0 0 1 20 6v11a2 2 0 0 1-2 2v1.5a1 1 0 0 1-2 0V19H8v1.5a1 1 0 0 1-2 0V19a2 2 0 0 1-2-2V6a2.5 2.5 0 0 1 2.5-2.5z"/>
+              <rect x="6" y="6" width="12" height="5.5" rx="1" fill="#4D8AF0"/>
+              <circle cx="7.8" cy="15" r="1.3" fill="#4D8AF0"/>
+              <circle cx="16.2" cy="15" r="1.3" fill="#4D8AF0"/>
             </svg>
           </div>
         `;
       }
-      if (type === 'transfer') {
-        // 44px lavender circle (#9E8DF2) containing dark (#121216) horizontal right arrow
+      if (tx.iconType === 'topup') {
+        const iconSize = Math.round(size * 0.5);
         return `
-          <div class="${sizeClass} rounded-full bg-[#9E8DF2] flex items-center justify-center shrink-0">
-            <svg class="${iconInnerClass} text-[#121216]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M13 6l6 6-6 6"/>
-            </svg>
-          </div>
-        `;
-      }
-      if (type === 'topup') {
-        return `
-          <div class="${sizeClass} rounded-full bg-[#22C55E] flex items-center justify-center shrink-0">
-            <svg class="${iconInnerClass} text-[#052E16]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round">
+          <div style="width:${size}px;height:${size}px" class="rounded-full bg-[#4ADE80]/20 text-[#4ADE80] flex items-center justify-center shrink-0">
+            <svg style="width:${iconSize}px;height:${iconSize}px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
               <path d="M12 5v14M5 12h14"/>
             </svg>
           </div>
         `;
       }
-      // qrUser / default QR
+      if (tx.iconType === 'qrUser') {
+        const iconSize = Math.round(size * 0.48);
+        return `
+          <div style="width:${size}px;height:${size}px" class="rounded-full bg-[#9E8DF2] text-[#111115] flex items-center justify-center shrink-0">
+            <svg style="width:${iconSize}px;height:${iconSize}px" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3.5 3.5h6.5V10H3.5V3.5zm1.8 1.8v2.9h2.9V5.3H5.3zM14 3.5h6.5V10H14V3.5zm1.8 1.8v2.9h2.9V5.3h-2.9zM3.5 14H10v6.5H3.5V14zm1.8 1.8v2.9h2.9v-2.9H5.3z"/>
+              <rect x="14" y="14" width="2.2" height="2.2"/>
+              <rect x="18.3" y="14" width="2.2" height="4.4"/>
+              <rect x="14" y="18.3" width="4.4" height="2.2"/>
+            </svg>
+          </div>
+        `;
+      }
+      // Default: lavender circle with right arrow (Transfer)
+      const iconSize = Math.round(size * 0.5);
       return `
-        <div class="${sizeClass} rounded-full bg-[#32303B] flex items-center justify-center shrink-0">
-          <svg class="${iconInnerClass} text-[#9E8DF2]" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 3h7v7H3V3zm2 2v3h3V5H5zm9-2h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5zm11-2h2v2h-2v-2zm3 0h2v3h-2v-3zm-5 3h2v4h-2v-4zm3 2h4v2h-4v-2z"/>
+        <div style="width:${size}px;height:${size}px" class="rounded-full bg-[#9E8DF2] text-[#111115] flex items-center justify-center shrink-0">
+          <svg style="width:${iconSize}px;height:${iconSize}px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
           </svg>
         </div>
       `;
     }
 
-    // ==================== RENDER MAIN TRANSACTIONS ====================
+    // ==================== HEADER & BALANCE LOGIC ====================
     function updateBalanceUI() {
-      const acc = accounts[currentAccountIdx];
-      const parts = formatNumberParts(acc.balance);
-      document.getElementById('balanceInteger').textContent = parts.int;
-      document.getElementById('balanceFraction').textContent = parts.frac;
+      const acc = accounts[currentAccountIndex];
+      const { intStr, fracStr } = formatNumberParts(acc.balance);
+      document.getElementById('balanceInteger').textContent = intStr;
+      document.getElementById('balanceFraction').textContent = fracStr;
 
       const titleBadge = document.getElementById('accountTitleBadge');
       if (acc.title) {
@@ -958,130 +1116,123 @@
       }
 
       document.querySelectorAll('.account-dot').forEach((dot, idx) => {
-        dot.classList.toggle('bg-[#9580E8]', idx === currentAccountIdx);
-        dot.classList.toggle('bg-[#383640]', idx !== currentAccountIdx);
+        dot.classList.toggle('bg-[#9E8DF2]', idx === currentAccountIndex);
+        dot.classList.toggle('bg-[#383640]', idx !== currentAccountIndex);
       });
     }
 
     function switchAccountSlide(idx) {
-      currentAccountIdx = idx;
+      currentAccountIndex = idx;
       updateBalanceUI();
     }
 
+    function expandHeader() {
+      const qa = document.getElementById('quickActionsWrapper');
+      const dots = document.getElementById('pageDotsWrapper');
+      const list = document.getElementById('transactionScrollList');
+      if (qa) qa.classList.remove('collapsed');
+      if (dots) dots.classList.remove('collapsed');
+      if (list) list.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setupScrollCollapse() {
+      const list = document.getElementById('transactionScrollList');
+      const qa = document.getElementById('quickActionsWrapper');
+      const dots = document.getElementById('pageDotsWrapper');
+      if (!list || !qa || !dots) return;
+
+      list.addEventListener('scroll', () => {
+        const shouldCollapse = list.scrollTop > 22;
+        qa.classList.toggle('collapsed', shouldCollapse);
+        dots.classList.toggle('collapsed', shouldCollapse);
+      }, { passive: true });
+    }
+
+    // ==================== TRANSACTION FEED RENDERING ====================
     function renderTransactions() {
-      const container = document.getElementById('transactionScrollList');
       const query = (document.getElementById('transactionSearchInput')?.value || '').trim().toLowerCase();
 
       const filtered = transactions.filter(tx => {
         if (!query) return true;
+        const amtStr = Math.abs(tx.amount).toFixed(2).replace('.', ',');
         return (
           tx.title.toLowerCase().includes(query) ||
           tx.subtitle.toLowerCase().includes(query) ||
           (tx.bankName && tx.bankName.toLowerCase().includes(query)) ||
-          Math.abs(tx.amount).toFixed(2).replace('.', ',').includes(query) ||
-          (tx.note && tx.note.toLowerCase().includes(query))
+          (tx.note && tx.note.toLowerCase().includes(query)) ||
+          amtStr.includes(query)
         );
       });
 
-      const todayList = filtered.filter(t => t.group === 'today');
-      const yesterdayList = filtered.filter(t => t.group === 'yesterday');
+      const todayTxs = filtered.filter(tx => tx.group === 'today');
+      const yestTxs = filtered.filter(tx => tx.group === 'yesterday');
 
-      // Update TODAY header total dynamically
-      const todaySum = todayList.reduce((acc, t) => acc + (t.amount < 0 ? Math.abs(t.amount) : 0), 0);
-      const todayParts = formatNumberParts(todaySum);
-      document.getElementById('todayHeaderLabel').innerHTML = `СЕГОДНЯ, ${todayParts.int}${todayParts.frac} <span class="som-sm">С</span>`;
+      // Update sticky 'СЕГОДНЯ' total
+      const todayTotal = todayTxs.reduce((sum, tx) => sum + (tx.amount < 0 ? Math.abs(tx.amount) : 0), 0);
+      const { intStr: tInt, fracStr: tFrac } = formatNumberParts(todayTotal);
+      document.getElementById('todayHeaderLabel').innerHTML = `СЕГОДНЯ, ${tInt}${tFrac} <span class="som-sm">С</span>`;
 
-      let html = '';
+      const yestTotal = yestTxs.reduce((sum, tx) => sum + (tx.amount < 0 ? Math.abs(tx.amount) : 0), 0);
+      const { intStr: yInt, fracStr: yFrac } = formatNumberParts(yestTotal);
 
-      if (filtered.length === 0) {
-        html = `
-          <div class="py-16 text-center text-[#8A8990] text-[14px]">
-            Ничего не найдено по запросу «${escapeHtml(query)}»
-          </div>
-        `;
-        container.innerHTML = html;
-        return;
-      }
+      const renderRow = (tx) => {
+        const isPositive = tx.amount > 0;
+        const { intStr, fracStr } = formatNumberParts(tx.amount);
+        const amountColor = isPositive ? 'text-[#4ADE80]' : 'text-[#F2F1F5]';
+        const prefix = isPositive ? '+' : '';
 
-      // Today Items
-      todayList.forEach(tx => {
-        html += renderTransactionRow(tx);
-      });
-
-      // Yesterday Section
-      if (yesterdayList.length > 0) {
-        const yestSum = yesterdayList.reduce((acc, t) => acc + (t.amount < 0 ? Math.abs(t.amount) : 0), 0);
-        const yestParts = formatNumberParts(yestSum);
-        html += `
-          <div class="text-[12.5px] font-medium tracking-[0.03em] text-[#88868E] uppercase mt-6 mb-2">
-            ВЧЕРА, ${yestParts.int}${yestParts.frac} <span class="som-sm">С</span>
-          </div>
-        `;
-        yesterdayList.forEach(tx => {
-          html += renderTransactionRow(tx);
-        });
-      }
-
-      container.innerHTML = html;
-    }
-
-    function renderTransactionRow(tx) {
-      const parts = formatNumberParts(tx.amount);
-      const isIncome = tx.amount > 0;
-      const amountColor = isIncome ? 'text-[#4ADE80]' : 'text-[#F2F1F5]';
-      const prefix = isIncome ? '+' : '';
-
-      return `
-        <div
-          onclick="openTransactionDetail('${tx.id}')"
-          class="pressable py-3 flex items-center justify-between gap-3 cursor-pointer rounded-2xl active:bg-white/[0.03]"
-        >
-          <div class="flex items-center gap-3.5 min-w-0">
-            ${renderIconSVG(tx.iconType)}
-            <div class="min-w-0">
-              <div class="text-[15.5px] font-normal text-[#F2F1F5] leading-[1.25] truncate">
-                ${escapeHtml(tx.title)}
-              </div>
-              ${tx.bankName ? `<div class="text-[15.5px] font-normal text-[#F2F1F5] leading-[1.25] truncate">${escapeHtml(tx.bankName)}</div>` : ''}
-              <div class="text-[13.5px] font-normal text-[#88868E] leading-[1.3] truncate mt-0.5 flex items-center gap-1.5">
-                <span>${escapeHtml(tx.subtitle)}</span>
-                ${tx.note ? `<span class="text-[#9E8DF2] text-[11.5px] truncate">• ${escapeHtml(tx.note)}</span>` : ''}
+        return `
+          <div onclick="openTransactionDetail('${tx.id}')" class="pressable py-3 flex items-center justify-between gap-3 cursor-pointer rounded-2xl">
+            <div class="flex items-center gap-3.5 min-w-0">
+              ${getTransactionIconHtml(tx, 44)}
+              <div class="min-w-0">
+                <div class="text-[16px] font-normal text-[#F2F1F5] leading-[1.25] truncate">${escapeHtml(tx.title)}</div>
+                ${tx.bankName ? `<div class="text-[15.5px] font-normal text-[#F2F1F5] leading-[1.25] truncate">${escapeHtml(tx.bankName)}</div>` : ''}
+                <div class="text-[13.5px] text-[#88868E] leading-[1.3] mt-0.5 truncate">
+                  ${escapeHtml(tx.subtitle)}${tx.note ? ` · <span class="text-[#9E8DF2]">${escapeHtml(tx.note)}</span>` : ''}
+                </div>
               </div>
             </div>
+            <div class="text-right shrink-0 ${amountColor}">
+              <span class="text-[16.5px] font-normal">${prefix}${intStr}</span><span class="text-[13px] font-normal">${fracStr}</span>
+            </div>
           </div>
-          <div class="text-right shrink-0 ${amountColor} self-start pt-0.5">
-            <span class="text-[15.5px] font-normal tracking-tight">${prefix}${parts.int}${parts.frac}</span>
+        `;
+      };
+
+      let html = '';
+      if (todayTxs.length > 0) {
+        html += `<div class="space-y-0.5">${todayTxs.map(renderRow).join('')}</div>`;
+      }
+      if (yestTxs.length > 0) {
+        html += `
+          <div class="mt-5 mb-2 text-[12.5px] font-medium tracking-[0.03em] text-[#88868E] uppercase">
+            ВЧЕРА, ${yInt}${yFrac} <span class="som-sm">С</span>
           </div>
-        </div>
-      `;
+          <div class="space-y-0.5">${yestTxs.map(renderRow).join('')}</div>
+        `;
+      }
+      if (!todayTxs.length && !yestTxs.length) {
+        html = `<div class="py-12 text-center text-[14px] text-[#88868E]">Операции не найдены</div>`;
+      }
+
+      document.getElementById('transactionScrollList').innerHTML = html;
     }
 
-    // ==================== COLLAPSIBLE HEADER ON SCROLL ====================
-    function setupScrollCollapse() {
-      const scrollList = document.getElementById('transactionScrollList');
-      const quickWrapper = document.getElementById('quickActionsWrapper');
-      const dotsWrapper = document.getElementById('pageDotsWrapper');
-
-      scrollList.addEventListener('scroll', () => {
-        const st = scrollList.scrollTop;
-        if (st > 18 && !isHeaderCollapsed) {
-          isHeaderCollapsed = true;
-          quickWrapper.classList.add('collapsed');
-          dotsWrapper.classList.add('collapsed');
-        } else if (st <= 6 && isHeaderCollapsed) {
-          isHeaderCollapsed = false;
-          quickWrapper.classList.remove('collapsed');
-          dotsWrapper.classList.remove('collapsed');
-        }
-      }, { passive: true });
+    function toggleSearchBar() {
+      const bar = document.getElementById('searchBarContainer');
+      const input = document.getElementById('transactionSearchInput');
+      bar.classList.toggle('hidden');
+      if (!bar.classList.contains('hidden')) {
+        input.focus();
+      }
     }
 
-    function expandHeader() {
-      const scrollList = document.getElementById('transactionScrollList');
-      scrollList.scrollTo({ top: 0, behavior: 'smooth' });
-      isHeaderCollapsed = false;
-      document.getElementById('quickActionsWrapper').classList.remove('collapsed');
-      document.getElementById('pageDotsWrapper').classList.remove('collapsed');
+    function clearSearch() {
+      const input = document.getElementById('transactionSearchInput');
+      input.value = '';
+      document.getElementById('searchBarContainer').classList.add('hidden');
+      renderTransactions();
     }
 
     // ==================== TRANSACTION DETAIL SCREEN ====================
@@ -1089,368 +1240,241 @@
       const tx = transactions.find(t => t.id === txId);
       if (!tx) return;
       activeTransaction = tx;
+      isEditingAmount = false;
+      chartSlideIndex = 0;
 
-
-      // 68px Merchant Logo
-      document.getElementById('detailMerchantLogo').innerHTML = renderIconSVG(tx.iconType, 'w-[68px] h-[68px]', 'w-8 h-8');
-
-      // Merchant Name & Large Formatted Amount (Click to edit)
+      document.getElementById('detailMerchantLogo').innerHTML = getTransactionIconHtml(tx, 68);
       document.getElementById('detailMerchantName').textContent = tx.title;
-      renderDetailAmountDisplay(tx);
+      renderDetailAmount();
 
-      // Info Card Rows
       const balParts = formatNumberParts(tx.balanceAfter);
-      let infoHtml = `
-        <div class="flex items-center justify-between text-[15px]">
-          <span class="text-[#88868E] w-[116px] shrink-0">Категория</span>
-          <span class="text-[#F2F1F5] flex-1">${escapeHtml(tx.category)}</span>
+      document.getElementById('detailInfoCard').innerHTML = `
+        <div class="grid grid-cols-[38%_62%] items-center text-[15px]">
+          <span class="text-[#88868E]">Категория</span>
+          <span class="text-[#F2F1F5]">${escapeHtml(tx.category)}</span>
+        </div>
+        <div class="grid grid-cols-[38%_62%] items-center text-[15px]">
+          <span class="text-[#88868E]">Остаток</span>
+          <span class="text-[#F2F1F5]">${balParts.intStr}${balParts.fracStr} <span class="som-sm">с</span></span>
+        </div>
+        <div class="grid grid-cols-[38%_62%] items-center text-[15px]">
+          <span class="text-[#88868E]">Дата, время</span>
+          <span class="text-[#F2F1F5]">${escapeHtml(tx.dateTime)}</span>
         </div>
       `;
-      if (tx.bankName) {
-        infoHtml += `
-          <div class="flex items-center justify-between text-[15px]">
-            <span class="text-[#88868E] w-[116px] shrink-0">Банк получателя</span>
-            <span class="text-[#F2F1F5] flex-1">${escapeHtml(tx.bankName)}</span>
-          </div>
-        `;
-      }
-      infoHtml += `
-        <div class="flex items-center justify-between text-[15px]">
-          <span class="text-[#88868E] w-[116px] shrink-0">Остаток</span>
-          <span class="text-[#F2F1F5] flex-1">${balParts.int}${balParts.frac} <span class="som-sm">с</span></span>
-        </div>
-        <div class="flex items-center justify-between text-[15px]">
-          <span class="text-[#88868E] w-[116px] shrink-0">Дата, время</span>
-          <span class="text-[#F2F1F5] flex-1">${escapeHtml(tx.dateTime)}</span>
-        </div>
-      `;
-      document.getElementById('detailInfoCard').innerHTML = infoHtml;
 
-      // Analytics Chart Data
-      const chart = tx.chart;
+      // Chart data
+      const chart = tx.chart || {
+        title: tx.title,
+        yMax: '2,00K',
+        yMid: '1,00K',
+        bars: [0, 20, 35, 50, 75, 90],
+        total6m: '3 400,00',
+        avgCheck: '340,00',
+        novCount: '4 операции'
+      };
+
       document.getElementById('chartMerchantTitle').textContent = chart.title;
-      document.getElementById('chartYMax').innerHTML = `${chart.yMax} <span class="som-sm">с</span>`;
-      document.getElementById('chartYMid').innerHTML = `${chart.yMid} <span class="som-sm">с</span>`;
+      document.getElementById('chartYMax').innerHTML = `${escapeHtml(chart.yMax)} <span class="som-sm">с</span>`;
+      document.getElementById('chartYMid').innerHTML = `${escapeHtml(chart.yMid)} <span class="som-sm">с</span>`;
 
-      const barsHtml = chart.bars.map(pct => {
-        if (!pct || pct <= 0) {
-          return `<div class="h-full flex items-end justify-center"></div>`;
-        }
+      document.getElementById('chartBarsContainer').innerHTML = chart.bars.map(pct => {
+        if (!pct || pct <= 0) return `<div></div>`;
         return `
           <div class="h-full flex items-end justify-center">
-            <div class="chart-bar w-[8px] rounded-full bg-[#B5867B]" style="height: ${pct}%"></div>
+            <div style="height:${pct}%" class="chart-bar w-[7px] rounded-full bg-[#B5867B]"></div>
           </div>
         `;
       }).join('');
-      document.getElementById('chartBarsContainer').innerHTML = barsHtml;
 
-      // Chart Slide 2 Summary
-      document.getElementById('chartSummaryTitle').textContent = `${chart.title} · Сводка`;
       document.getElementById('chartSummaryStats').innerHTML = `
-        <div class="flex items-center justify-between text-[13.5px]">
-          <span class="text-[#B5ABA9]">Всего за 6 мес.</span>
-          <span class="text-white font-medium">${chart.total6m} <span class="som-sm">с</span></span>
+        <div class="flex justify-between text-[13.5px]">
+          <span class="text-[#9A9594]">Всего за 6 мес.</span>
+          <span class="text-[#F2F1F5] font-medium">${escapeHtml(chart.total6m)} <span class="som-sm">с</span></span>
         </div>
-        <div class="flex items-center justify-between text-[13.5px]">
-          <span class="text-[#B5ABA9]">Средний чек</span>
-          <span class="text-white font-medium">${chart.avgCheck} <span class="som-sm">с</span></span>
+        <div class="flex justify-between text-[13.5px]">
+          <span class="text-[#9A9594]">Средний чек</span>
+          <span class="text-[#F2F1F5] font-medium">${escapeHtml(chart.avgCheck)} <span class="som-sm">с</span></span>
         </div>
-        <div class="flex items-center justify-between text-[13.5px]">
-          <span class="text-[#B5ABA9]">Активность в ноябре</span>
-          <span class="text-white font-medium">${chart.novCount}</span>
+        <div class="flex justify-between text-[13.5px]">
+          <span class="text-[#9A9594]">Операций в ноябре</span>
+          <span class="text-[#F2F1F5] font-medium">${escapeHtml(chart.novCount)}</span>
         </div>
       `;
 
-      // Note Input
-      const noteInput = document.getElementById('detailNoteInput');
-      noteInput.value = tx.note || '';
-      document.getElementById('noteSavedBadge').classList.add('hidden');
+      setChartSlide(0);
+      document.getElementById('detailNoteInput').value = tx.note || '';
+      document.getElementById('detailMccCode').textContent = tx.mcc || 'MCC 4121';
+      document.getElementById('detailMccMerchant').textContent = tx.merchantCode || tx.title.toUpperCase();
 
-      // MCC Code
-      document.getElementById('detailMccCode').textContent = tx.mcc;
-      document.getElementById('detailMccMerchant').textContent = tx.merchantCode;
-
-      // Slide Open
+      document.getElementById('detailScrollBody').scrollTop = 0;
       document.getElementById('detailScreen').classList.add('open');
     }
 
-    function renderDetailAmountDisplay(tx) {
-      const wrapper = document.getElementById('detailAmountWrapper');
-      const parts = formatNumberParts(tx.amount);
-      const displaySign = tx.amount > 0 ? '+' : parts.sign;
+    function closeTransactionDetail() {
+      isEditingAmount = false;
+      document.getElementById('detailScreen').classList.remove('open');
+    }
 
-      wrapper.innerHTML = `
-        <div id="detailAmount" onclick="startEditingAmount()" title="Нажмите, чтобы изменить сумму" class="pressable inline-flex items-baseline justify-center text-white cursor-pointer px-3 py-1 rounded-2xl hover:bg-white/[0.05] group">
-          <span class="text-[40px] font-medium leading-none tracking-[-0.02em]">${displaySign}${parts.int}</span>
-          <span class="text-[23px] font-medium leading-none ml-0.5">${parts.frac}</span>
-          <span class="text-[23px] font-medium leading-none ml-2"><span class="som">с</span></span>
-          <svg class="w-4 h-4 opacity-0 text-transparent ml-2 self-center pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 20h9"/>
-            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-          </svg>
-        </div>
-      `;
+    function renderDetailAmount() {
+      if (!activeTransaction) return;
+      const wrapper = document.getElementById('detailAmountWrapper');
+      if (!isEditingAmount) {
+        const { sign, intStr, fracStr } = formatNumberParts(activeTransaction.amount);
+        wrapper.innerHTML = `
+          <div id="detailAmount" onclick="startEditingAmount()" title="Нажмите, чтобы изменить сумму" class="pressable inline-flex items-baseline justify-center text-white cursor-pointer px-3 py-1 rounded-2xl hover:bg-white/[0.05] group">
+            <span class="text-[40px] font-normal leading-none tracking-[-0.02em]">${sign}${intStr}</span>
+            <span class="text-[23px] font-normal leading-none ml-0.5">${fracStr}</span>
+            <span class="text-[23px] font-normal leading-none ml-2"><span class="som">с</span></span>
+            <svg class="w-4 h-4 ml-1.5 opacity-0 text-transparent pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+            </svg>
+          </div>
+        `;
+      } else {
+        const absVal = Math.abs(activeTransaction.amount).toFixed(2);
+        wrapper.innerHTML = `
+          <div class="inline-flex items-center gap-2 bg-[#2A2930] px-3 py-1.5 rounded-2xl border border-[#9E8DF2]/50">
+            <button onclick="toggleEditSign()" class="w-9 h-9 rounded-xl bg-white/10 text-white text-[18px] font-semibold flex items-center justify-center">
+              ${editAmountSign < 0 ? '−' : '+'}
+            </button>
+            <input
+              id="editAmountInput"
+              type="number"
+              step="0.01"
+              inputmode="decimal"
+              value="${absVal}"
+              onkeydown="if(event.key==='Enter') saveEditedAmount(); if(event.key==='Escape') cancelEditingAmount();"
+              class="w-[132px] bg-transparent text-white text-[26px] font-medium text-center outline-none"
+            />
+            <button onclick="saveEditedAmount()" class="w-9 h-9 rounded-xl bg-[#9E8DF2] text-[#111115] font-bold flex items-center justify-center" title="Сохранить">
+              ✓
+            </button>
+          </div>
+        `;
+        setTimeout(() => {
+          const inp = document.getElementById('editAmountInput');
+          if (inp) {
+            inp.focus();
+            inp.select();
+          }
+        }, 20);
+      }
     }
 
     function startEditingAmount() {
       if (!activeTransaction) return;
-      const wrapper = document.getElementById('detailAmountWrapper');
-      editSignMultiplier = activeTransaction.amount > 0 ? 1 : -1;
-      const absFormatted = Math.abs(activeTransaction.amount).toFixed(2).replace('.', ',');
-
-      wrapper.innerHTML = `
-        <div class="inline-flex items-center gap-2 bg-[#28272E] border border-[#9E8DF2]/70 rounded-2xl px-2.5 py-1.5 shadow-lg">
-          <button
-            type="button"
-            id="editSignBtn"
-            onclick="toggleEditSign()"
-            title="Переключить списание / пополнение"
-            class="pressable w-9 h-9 rounded-xl bg-[#35343D] text-white font-semibold text-[18px] flex items-center justify-center shrink-0"
-          >${editSignMultiplier < 0 ? '−' : '+'}</button>
-          <input
-            id="detailAmountInput"
-            type="text"
-            inputmode="decimal"
-            value="${absFormatted}"
-            onkeydown="handleAmountInputKey(event)"
-            class="w-[148px] bg-transparent text-white text-[28px] font-medium text-center outline-none tracking-tight"
-          />
-          <span class="text-[20px] text-[#88868E] font-medium pr-1"><span class="som">с</span></span>
-          <button
-            type="button"
-            onclick="commitAmountEdit()"
-            title="Сохранить сумму"
-            class="pressable w-9 h-9 rounded-xl bg-[#9E8DF2] text-[#111115] flex items-center justify-center shrink-0"
-          >
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 6L9 17l-5-5"/>
-            </svg>
-          </button>
-        </div>
-      `;
-
-      const input = document.getElementById('detailAmountInput');
-      if (input) {
-        input.focus();
-        input.select();
-      }
+      isEditingAmount = true;
+      editAmountSign = activeTransaction.amount <= 0 ? -1 : 1;
+      renderDetailAmount();
     }
 
     function toggleEditSign() {
-      editSignMultiplier = editSignMultiplier < 0 ? 1 : -1;
-      const btn = document.getElementById('editSignBtn');
-      if (btn) {
-        btn.textContent = editSignMultiplier < 0 ? '−' : '+';
-      }
+      editAmountSign = editAmountSign < 0 ? 1 : -1;
+      renderDetailAmount();
     }
 
-    function handleAmountInputKey(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        commitAmountEdit();
-      } else if (e.key === 'Escape') {
-        e.preventDefault();
-        if (activeTransaction) renderDetailAmountDisplay(activeTransaction);
-      }
-    }
-
-    function commitAmountEdit() {
+    function saveEditedAmount() {
       if (!activeTransaction) return;
-      const input = document.getElementById('detailAmountInput');
-      if (!input) return;
-
-      let raw = input.value.trim().replace(/\s+/g, '').replace(',', '.');
-      let sign = editSignMultiplier;
-      if (raw.startsWith('-')) {
-        sign = -1;
-        raw = raw.slice(1);
-      } else if (raw.startsWith('+')) {
-        sign = 1;
-        raw = raw.slice(1);
-      }
-
-      const parsed = parseFloat(raw);
-      if (isNaN(parsed) || !isFinite(parsed) || parsed <= 0) {
-        showToast('Введите корректную сумму больше 0');
-        input.focus();
+      const inp = document.getElementById('editAmountInput');
+      const parsed = parseFloat((inp?.value || '0').replace(',', '.'));
+      if (isNaN(parsed) || parsed <= 0) {
+        showToast('Введите корректную сумму');
         return;
       }
-
       const oldAmount = activeTransaction.amount;
-      const newAmount = +(sign * parsed).toFixed(2);
-      const delta = +(newAmount - oldAmount).toFixed(2);
+      const newAmount = +(editAmountSign * Math.abs(parsed)).toFixed(2);
+      const diff = newAmount - oldAmount;
 
-      // Update transaction & balances
       activeTransaction.amount = newAmount;
-      activeTransaction.balanceAfter = +(activeTransaction.balanceAfter + delta).toFixed(2);
-      accounts[2].balance = +(accounts[2].balance + delta).toFixed(2);
+      accounts[2].balance = +(accounts[2].balance + diff).toFixed(2);
 
-      // Persist edited amounts in localStorage
-      try {
-        const savedEdits = JSON.parse(localStorage.getItem('kg_bank_tx_edits') || '{}');
-        savedEdits[activeTransaction.id] = {
-          amount: activeTransaction.amount,
-          balanceAfter: activeTransaction.balanceAfter
-        };
-        localStorage.setItem('kg_bank_tx_edits', JSON.stringify(savedEdits));
-      } catch (e) {}
-
-      // Sync both the main list, top balance, and detail card UI
+      isEditingAmount = false;
+      renderDetailAmount();
       updateBalanceUI();
       renderTransactions();
-      openTransactionDetail(activeTransaction.id);
-
-      const formattedParts = formatNumberParts(newAmount);
-      showToast(`Сумма обновлена: ${formattedParts.sign}${formattedParts.int}${formattedParts.frac} с`);
+      showToast('Сумма операции обновлена');
     }
 
-    function closeTransactionDetail() {
-      document.getElementById('detailScreen').classList.remove('open');
-      activeTransaction = null;
-      renderTransactions();
-    }
-
-    function setChartSlide(idx) {
-      currentChartSlide = idx;
-      const track = document.getElementById('chartCarouselTrack');
-      track.style.transform = `translateX(-${idx * 100}%)`;
-
-      document.getElementById('chartDot0').classList.toggle('bg-[#9580E8]', idx === 0);
-      document.getElementById('chartDot0').classList.toggle('bg-[#3A3842]', idx !== 0);
-      document.getElementById('chartDot1').classList.toggle('bg-[#9580E8]', idx === 1);
-      document.getElementById('chartDot1').classList.toggle('bg-[#3A3842]', idx !== 1);
+    function cancelEditingAmount() {
+      isEditingAmount = false;
+      renderDetailAmount();
     }
 
     function toggleChartSlide() {
-      setChartSlide(currentChartSlide === 0 ? 1 : 0);
+      setChartSlide(chartSlideIndex === 0 ? 1 : 0);
     }
 
-    // Touch swipe support on Chart Card
-    (function initChartSwipe() {
-      const section = document.getElementById('detailChartSection');
-      let startX = 0;
-      section.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-      }, { passive: true });
-      section.addEventListener('touchend', e => {
-        const diff = e.changedTouches[0].clientX - startX;
-        if (Math.abs(diff) > 36) {
-          if (diff < 0 && currentChartSlide === 0) setChartSlide(1);
-          if (diff > 0 && currentChartSlide === 1) setChartSlide(0);
-        }
-      }, { passive: true });
-    })();
-
-    function saveTransactionNote(val) {
-      if (!activeTransaction) return;
-      activeTransaction.note = val.trim();
-      try {
-        const savedNotes = JSON.parse(localStorage.getItem('kg_bank_notes') || '{}');
-        savedNotes[activeTransaction.id] = activeTransaction.note;
-        localStorage.setItem('kg_bank_notes', JSON.stringify(savedNotes));
-      } catch (e) {}
-      const badge = document.getElementById('noteSavedBadge');
-      badge.classList.remove('hidden');
-      clearTimeout(window._noteTimer);
-      window._noteTimer = setTimeout(() => badge.classList.add('hidden'), 1400);
-    }
-
-    // ==================== SEARCH & ANALYTICS ====================
-    function toggleSearchBar() {
-      const box = document.getElementById('searchBarContainer');
-      const input = document.getElementById('transactionSearchInput');
-      const isHidden = box.classList.contains('hidden');
-      if (isHidden) {
-        box.classList.remove('hidden');
-        input.focus();
-      } else {
-        clearSearch();
+    function setChartSlide(idx) {
+      chartSlideIndex = idx;
+      const track = document.getElementById('chartCarouselTrack');
+      if (track) {
+        track.style.transform = `translateX(-${idx * 100}%)`;
+      }
+      const dot0 = document.getElementById('chartDot0');
+      const dot1 = document.getElementById('chartDot1');
+      if (dot0 && dot1) {
+        dot0.classList.toggle('bg-[#9E8DF2]', idx === 0);
+        dot0.classList.toggle('bg-[#3A3842]', idx !== 0);
+        dot1.classList.toggle('bg-[#9E8DF2]', idx === 1);
+        dot1.classList.toggle('bg-[#3A3842]', idx !== 1);
       }
     }
 
-    function clearSearch() {
-      const box = document.getElementById('searchBarContainer');
-      const input = document.getElementById('transactionSearchInput');
-      input.value = '';
-      box.classList.add('hidden');
+    function saveTransactionNote(val) {
+      if (!activeTransaction) return;
+      activeTransaction.note = val;
       renderTransactions();
+      const badge = document.getElementById('noteSavedBadge');
+      if (badge) {
+        badge.classList.remove('hidden');
+        clearTimeout(window._noteTimer);
+        window._noteTimer = setTimeout(() => badge.classList.add('hidden'), 1200);
+      }
     }
 
+    // ==================== ANALYTICS & QUICK ACTION MODALS ====================
     function openAnalyticsModal() {
-      const totalSpent = transactions
-        .filter(t => t.amount < 0)
-        .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+      const totalSpent = transactions.reduce((sum, tx) => sum + (tx.amount < 0 ? Math.abs(tx.amount) : 0), 0);
+      const taxiSpent = transactions
+        .filter(tx => tx.category === 'Такси' && tx.amount < 0)
+        .reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+      const transferSpent = transactions
+        .filter(tx => tx.category.includes('Перевод') && tx.amount < 0)
+        .reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
 
       openModal(`
         <div class="space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-[18px] font-semibold text-white">Расходы за ноябрь 2026</h3>
-            <span class="text-[12px] text-[#9580E8] bg-[#9580E8]/15 px-2.5 py-1 rounded-full font-medium">Кыргызстан</span>
+            <h3 class="text-[18px] font-semibold text-white">Аналитика расходов</h3>
+            <span class="text-[12px] text-[#88868E]">Ноябрь 2026</span>
           </div>
           <div class="bg-[#27262E] rounded-2xl p-4">
-            <div class="text-[12px] text-[#8A8990] mb-1">Всего списано за период</div>
-            <div class="text-[28px] font-semibold text-white">${formatSomInline(totalSpent)}</div>
+            <div class="text-[12px] text-[#88868E]">Всего расходов за период</div>
+            <div class="text-[26px] font-semibold text-white mt-0.5">${formatSomInline(totalSpent)}</div>
           </div>
-          <div class="space-y-3 text-[14px]">
-            <div>
-              <div class="flex justify-between mb-1">
-                <span class="text-[#E4E3E8]">Такси (Yandex Go)</span>
-                <span class="text-white font-medium">760,00 <span class="som-sm">с</span></span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                <div class="h-full bg-[#FCE000] rounded-full" style="width: 35%"></div>
-              </div>
+          <div class="space-y-2.5 text-[14px]">
+            <div class="flex items-center justify-between bg-[#27262E]/70 px-4 py-3 rounded-xl">
+              <span class="text-[#F2F1F5]">Переводы</span>
+              <span class="text-white font-medium">${formatSomInline(transferSpent)}</span>
             </div>
-            <div>
-              <div class="flex justify-between mb-1">
-                <span class="text-[#E4E3E8]">Покупки по QR</span>
-                <span class="text-white font-medium">817,00 <span class="som-sm">с</span></span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                <div class="h-full bg-[#9580E8] rounded-full" style="width: 38%"></div>
-              </div>
-            </div>
-            <div>
-              <div class="flex justify-between mb-1">
-                <span class="text-[#E4E3E8]">Переводы на карту</span>
-                <span class="text-white font-medium">500,00 <span class="som-sm">с</span></span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                <div class="h-full bg-[#3B82F6] rounded-full" style="width: 23%"></div>
-              </div>
-            </div>
-            <div>
-              <div class="flex justify-between mb-1">
-                <span class="text-[#E4E3E8]">Развлечения и транспорт</span>
-                <span class="text-white font-medium">103,00 <span class="som-sm">с</span></span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                <div class="h-full bg-[#B88378] rounded-full" style="width: 6%"></div>
-              </div>
+            <div class="flex items-center justify-between bg-[#27262E]/70 px-4 py-3 rounded-xl">
+              <span class="text-[#F2F1F5]">Такси (Yandex Go)</span>
+              <span class="text-white font-medium">${formatSomInline(taxiSpent)}</span>
             </div>
           </div>
-          <button onclick="closeModal()" class="pressable w-full py-3.5 rounded-2xl bg-[#9580E8] text-[#121116] font-semibold text-[15px] mt-2">
-            Закрыть
-          </button>
         </div>
       `);
     }
 
-    // ==================== QUICK ACTION MODALS ====================
     function openActionModal(type) {
       if (type === 'topup') {
         openModal(`
           <div class="space-y-4">
             <h3 class="text-[18px] font-semibold text-white">Пополнить свою карту</h3>
-            <p class="text-[13px] text-[#8A8990]">Зачисление на карту ВИРТУАЛЬНАЯ VISA без комиссии</p>
             <div>
               <label class="block text-[12px] text-[#8A8990] mb-1.5">Сумма пополнения (<span class="som-sm">с</span>)</label>
               <input id="actionAmountInput" type="number" inputmode="decimal" value="1000" min="1" class="w-full bg-[#2B2A32] text-white text-[22px] font-semibold rounded-2xl px-4 py-3 outline-none border border-white/10 focus:border-[#9580E8]" />
-            </div>
-            <div class="flex gap-2">
-              <button type="button" onclick="document.getElementById('actionAmountInput').value=500" class="flex-1 py-2 rounded-xl bg-[#2B2A32] text-[13px] text-white/90 hover:bg-white/10">+500 <span class="som-sm">с</span></button>
-              <button type="button" onclick="document.getElementById('actionAmountInput').value=1000" class="flex-1 py-2 rounded-xl bg-[#2B2A32] text-[13px] text-white/90 hover:bg-white/10">+1 000 <span class="som-sm">с</span></button>
-              <button type="button" onclick="document.getElementById('actionAmountInput').value=5000" class="flex-1 py-2 rounded-xl bg-[#2B2A32] text-[13px] text-white/90 hover:bg-white/10">+5 000 <span class="som-sm">с</span></button>
             </div>
             <button onclick="executeNewTransaction('topup')" class="pressable w-full py-3.5 rounded-2xl bg-[#9580E8] text-[#121116] font-semibold text-[15px]">
               Пополнить карту
@@ -1462,7 +1486,7 @@
           <div class="space-y-4">
             <h3 class="text-[18px] font-semibold text-white">Перевести на карту</h3>
             <div>
-              <label class="block text-[12px] text-[#8A8990] mb-1.5">Получатель (ФИО или номер карты)</label>
+              <label class="block text-[12px] text-[#8A8990] mb-1.5">Получатель</label>
               <input id="actionRecipientInput" type="text" value="АЗАМАТ К." class="w-full bg-[#2B2A32] text-white text-[15px] rounded-2xl px-4 py-3 outline-none border border-white/10 focus:border-[#9580E8]" />
             </div>
             <div>
@@ -1482,16 +1506,8 @@
         openModal(`
           <div class="space-y-4">
             <h3 class="text-[18px] font-semibold text-white">Платеж по QR</h3>
-            <div class="bg-[#151419] rounded-2xl p-4 border border-dashed border-[#9580E8]/50 flex items-center justify-between">
-              <div>
-                <div class="text-[12px] text-[#9580E8] font-medium">ELQR Бишкек</div>
-                <div class="text-[15px] text-white font-medium mt-0.5">Кофейня «Бублик» · QR-904</div>
-              </div>
-              <div class="w-11 h-11 rounded-xl bg-[#9580E8]/15 flex items-center justify-center text-[#9580E8]">
-                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 3h7v7H3V3zm2 2v3h3V5H5zm9-2h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5zm11-2h2v2h-2v-2zm3 0h2v3h-2v-3zm-5 3h2v4h-2v-4zm3 2h4v2h-4v-2z"/>
-                </svg>
-              </div>
+            <div class="bg-[#27262E] rounded-2xl p-4 text-center text-[13px] text-[#B8B7BE]">
+              Сканер ELQR готов · Точка <span class="text-white font-medium">QR-904</span>
             </div>
             <div>
               <label class="block text-[12px] text-[#8A8990] mb-1.5">Сумма оплаты (<span class="som-sm">с</span>)</label>
@@ -1529,6 +1545,9 @@
           amount: +rawVal.toFixed(2),
           balanceAfter: acc.balance,
           dateTime: '27 ноя 2026, 12:05',
+          authCode: String(Math.floor(100000 + Math.random() * 900000)),
+          rrn: '63311205' + String(Math.floor(1000 + Math.random() * 9000)),
+          receiptHash: '6b09' + Math.random().toString(16).slice(2, 18) + 'ru',
           iconType: 'topup',
           mcc: 'MCC 6012',
           merchantCode: 'CARD TOPUP KG',
@@ -1558,6 +1577,9 @@
           amount: -rawVal.toFixed(2),
           balanceAfter: acc.balance,
           dateTime: '27 ноя 2026, 12:05',
+          authCode: String(Math.floor(100000 + Math.random() * 900000)),
+          rrn: '63311205' + String(Math.floor(1000 + Math.random() * 9000)),
+          receiptHash: '6b09' + Math.random().toString(16).slice(2, 18) + 'ru',
           iconType: 'transfer',
           mcc: 'MCC 4829',
           merchantCode: 'P2P TRANSFER KG',
@@ -1584,96 +1606,417 @@
           amount: -rawVal.toFixed(2),
           balanceAfter: acc.balance,
           dateTime: '27 ноя 2026, 12:05',
+          authCode: String(Math.floor(100000 + Math.random() * 900000)),
+          rrn: '63311205' + String(Math.floor(1000 + Math.random() * 9000)),
+          receiptHash: '6b09' + Math.random().toString(16).slice(2, 18) + 'ru',
           iconType: 'qrUser',
           mcc: 'MCC 5814',
-          merchantCode: 'ELQR BISHKEK 904',
+          merchantCode: 'QR-PAY 904 BISHKEK',
           note: '',
           chart: {
             title: 'Покупка по QR - 904',
-            yMax: '1,50K',
-            yMid: '750',
-            bars: [15, 25, 35, 50, 65, 80],
-            total6m: '2 890,00',
-            avgCheck: '260,00',
-            novCount: '4 покупки'
+            yMax: '1,20K',
+            yMid: '600',
+            bars: [15, 25, 45, 30, 55, 70],
+            total6m: '1 840,00',
+            avgCheck: '230,00',
+            novCount: '3 платежа'
           }
         });
-        showToast(`Оплата по QR ${rawVal.toFixed(2).replace('.', ',')} с прошла`);
+        showToast(`Оплата ${rawVal.toFixed(2).replace('.', ',')} с выполнена`);
       }
 
-      currentAccountIdx = 2;
+      closeModal();
       updateBalanceUI();
       renderTransactions();
-      closeModal();
     }
 
-    // ==================== VIRTUAL CARD MODAL ====================
     function openCardModal() {
       openModal(`
         <div class="space-y-4">
-          <div class="rounded-2xl bg-gradient-to-br from-[#F3F3F6] to-[#DCDCE2] p-5 text-[#141318] shadow-lg">
-            <div class="flex items-center justify-between mb-6">
-              <span class="text-[11px] font-semibold tracking-wider text-[#6E6D74] uppercase">ВИРТУАЛЬНАЯ КАРТА</span>
-              <span class="text-[22px] font-extrabold italic tracking-tighter text-[#1A1F71]">VISA</span>
+          <div class="flex items-center justify-between">
+            <h3 class="text-[18px] font-semibold text-white">Виртуальная карта VISA</h3>
+            <span class="text-[12px] text-[#4ADE80] bg-[#4ADE80]/15 px-2.5 py-1 rounded-full font-medium">Активна</span>
+          </div>
+          <div class="bg-[#F2F2F5] text-[#111215] rounded-2xl p-5 space-y-5 shadow-lg">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold tracking-wider text-[#6E6E73] uppercase">ВИРТУАЛЬНАЯ • SIMBANK</span>
+              <span class="text-[18px] font-extrabold italic text-[#1A1F71]">VISA</span>
             </div>
-            <div class="text-[18px] font-semibold tracking-[0.12em] mb-4">4169 •••• •••• 8421</div>
-            <div class="flex items-center justify-between text-[12px] text-[#52515A]">
-              <span>Срок: 09/29</span>
-              <span>Баланс: ${formatSomInline(accounts[2].balance)}</span>
+            <div class="text-[20px] font-semibold tracking-[0.12em] text-[#111215]">4169 •••• •••• 3687</div>
+            <div class="flex items-center justify-between text-[13px] text-[#4A4A50]">
+              <span>Срок: 11/29</span>
+              <span>CVV: •••</span>
             </div>
           </div>
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="copyTextToClipboard('4169 7500 2910 8421', 'Номер карты скопирован')" class="pressable py-3 rounded-2xl bg-[#2A2931] text-white text-[14px] font-medium">
-              Копировать номер
-            </button>
-            <button onclick="closeModal()" class="pressable py-3 rounded-2xl bg-[#9580E8] text-[#121116] text-[14px] font-semibold">
-              Готово
-            </button>
-          </div>
+          <button onclick="copyTextToClipboard('4169 5800 1294 3687', 'Номер карты скопирован')" class="pressable w-full py-3.5 rounded-2xl bg-[#9E8DF2] text-[#111115] font-semibold text-[15px]">
+            Скопировать номер карты
+          </button>
         </div>
       `);
     }
 
-    // ==================== DETAIL ACTION MODALS (Receipt, Split, Support) ====================
-    function openReceiptShareModal() {
+    // ==================== DETAIL ACTION SCREENS & PDF RECEIPT GENERATOR ====================
+    function formatReceiptDateTime(rawDateTime) {
+      const months = {
+        'янв': '01', 'фев': '02', 'мар': '03', 'апр': '04',
+        'мая': '05', 'май': '05', 'июн': '06', 'июл': '07',
+        'авг': '08', 'сен': '09', 'окт': '10', 'ноя': '11', 'дек': '12'
+      };
+      const match = String(rawDateTime).match(/(\d{1,2})\s+([а-яё]+)\s+(\d{4}),\s*(\d{2}:\d{2})/i);
+      if (match) {
+        const day = match[1].padStart(2, '0');
+        const mon = months[match[2].toLowerCase()] || '11';
+        const year = match[3];
+        const time = match[4];
+        return `${time} ${day}.${mon}.${year}`;
+      }
+      return rawDateTime;
+    }
+
+    function openReceiptShareScreen() {
       if (!activeTransaction) return;
       const tx = activeTransaction;
-      const receiptText = `Квитанция об операции\nТочка: ${tx.title}\nКатегория: ${tx.category}\nСумма: ${Math.abs(tx.amount).toFixed(2).replace('.', ',')} с\nДата и время: ${tx.dateTime}\nКод операции: ${tx.mcc} / ${tx.merchantCode}\nСтатус: Исполнено`;
+      const absAmountDot = Math.abs(tx.amount).toFixed(2);
+      const formattedDate = formatReceiptDateTime(tx.dateTime);
+      const authCode = tx.authCode || '764930';
+      const rrn = tx.rrn || '633017478556';
 
-      openModal(`
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-[18px] font-semibold text-white">Квитанция об оплате</h3>
-            <span class="text-[12px] text-[#4ADE80] bg-[#4ADE80]/15 px-2.5 py-0.5 rounded-full font-medium">Исполнено</span>
-          </div>
-          <div class="bg-[#141318] rounded-2xl p-4 border border-white/10 space-y-2.5 text-[13.5px]">
-            <div class="flex justify-between">
-              <span class="text-[#8A8990]">Получатель</span>
-              <span class="text-white font-medium">${escapeHtml(tx.title)}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-[#8A8990]">Сумма</span>
-              <span class="text-white font-semibold">${formatSomInline(Math.abs(tx.amount))}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-[#8A8990]">Дата, время</span>
-              <span class="text-white">${escapeHtml(tx.dateTime)}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-[#8A8990]">Терминал</span>
-              <span class="text-white">${escapeHtml(tx.merchantCode)} (${escapeHtml(tx.mcc)})</span>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick='copyTextToClipboard(${JSON.stringify(receiptText)}, "Квитанция скопирована")' class="pressable py-3.5 rounded-2xl bg-[#2A2931] text-white text-[14px] font-medium">
-              Скопировать текст
-            </button>
-            <button onclick="closeModal(); showToast('PDF-квитанция готова к отправке')" class="pressable py-3.5 rounded-2xl bg-[#9580E8] text-[#121116] text-[14px] font-semibold">
-              Отправить PDF
-            </button>
-          </div>
-        </div>
-      `);
+      document.getElementById('shareReceiptAmount').innerHTML = `${absAmountDot} <span class="som">с</span>`;
+      document.getElementById('shareReceiptRecipient').textContent = tx.title;
+      document.getElementById('shareReceiptAuthCode').textContent = authCode;
+      document.getElementById('shareReceiptRrn').textContent = rrn;
+      document.getElementById('shareReceiptRowAmount').innerHTML = `${absAmountDot} <span class="som-sm">с</span>`;
+      document.getElementById('shareReceiptDate').textContent = formattedDate;
+
+      document.getElementById('receiptShareScreen').classList.add('open');
+    }
+
+    function closeReceiptShareScreen() {
+      document.getElementById('receiptShareScreen').classList.remove('open');
+    }
+
+    function drawCurvedStampText(ctx, text, cx, cy, radius, startAngle, angleStep) {
+      ctx.save();
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        const angle = startAngle + i * angleStep;
+        ctx.save();
+        ctx.translate(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+        ctx.rotate(angle + Math.PI / 2);
+        ctx.fillText(ch, 0, 0);
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+
+    function generateAndDownloadReceiptPdf() {
+      if (!activeTransaction) return;
+      const tx = activeTransaction;
+      const absAmountDot = Math.abs(tx.amount).toFixed(2);
+      const formattedDate = formatReceiptDateTime(tx.dateTime);
+      const authCode = tx.authCode || '764930';
+      const rrn = tx.rrn || '633017478556';
+      const hashId = tx.receiptHash || '6b08168fdaa5674f0c76a19e';
+      const fileName = `receipt_${hashId}_ru_KG.pdf`;
+
+      try {
+        // High-DPI Canvas matching the exact Simbank PDF receipt layout
+        const W = 1120;
+        const H = 1480;
+        const canvas = document.createElement('canvas');
+        canvas.width = W;
+        canvas.height = H;
+        const ctx = canvas.getContext('2d');
+
+        // Light cool-gray paper background (#F3F4F8)
+        ctx.fillStyle = '#F3F4F8';
+        ctx.fillRect(0, 0, W, H);
+
+        const padX = 76;
+        const fontFamily = '"Roboto", "Golos Text", Arial, sans-serif';
+
+        // 1. Top-Left Amount (e.g. "497.00 с̲")
+        ctx.fillStyle = '#111215';
+        ctx.font = `700 72px ${fontFamily}`;
+        ctx.textBaseline = 'alphabetic';
+        const amountY = 148;
+        ctx.fillText(absAmountDot, padX, amountY);
+        const amountWidth = ctx.measureText(absAmountDot).width;
+
+        // Underlined Kyrgyz Som 'с̲'
+        const somX = padX + amountWidth + 20;
+        ctx.fillText('с', somX, amountY);
+        const somWidth = ctx.measureText('с').width;
+        ctx.fillRect(somX, amountY + 10, somWidth, 5.5);
+
+        // 2. Green Checkmark Badge + "Платеж прошел успешно"
+        const badgeX = padX;
+        const badgeY = 180;
+        const badgeSize = 40;
+        const s = badgeSize / 24;
+
+        ctx.save();
+        ctx.translate(badgeX, badgeY);
+        ctx.scale(s, s);
+
+        const badgeGrad = ctx.createLinearGradient(0, 1.5, 0, 22.5);
+        badgeGrad.addColorStop(0, '#19C72B');
+        badgeGrad.addColorStop(0.55, '#0FB421');
+        badgeGrad.addColorStop(1, '#099B19');
+        ctx.fillStyle = badgeGrad;
+        ctx.beginPath();
+        ctx.roundRect(1.5, 1.5, 21, 21, 5.2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#2B8E35';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Top glossy highlight strip matching Android/OneUI checkmark emoji
+        const glossGrad = ctx.createLinearGradient(0, 2.8, 0, 7.6);
+        glossGrad.addColorStop(0, 'rgba(255, 255, 255, 0.62)');
+        glossGrad.addColorStop(1, 'rgba(255, 255, 255, 0.06)');
+        ctx.fillStyle = glossGrad;
+        ctx.beginPath();
+        ctx.roundRect(3.2, 2.8, 17.6, 4.8, 2.4);
+        ctx.fill();
+
+        // Subtle shadow beneath checkmark
+        ctx.fillStyle = 'rgba(5, 85, 14, 0.32)';
+        ctx.beginPath();
+        ctx.moveTo(6.1, 13.5);
+        ctx.lineTo(10.4, 18.6);
+        ctx.lineTo(18.1, 8.9);
+        ctx.lineTo(16.5, 7.6);
+        ctx.lineTo(10.3, 15.2);
+        ctx.lineTo(7.6, 12.1);
+        ctx.closePath();
+        ctx.fill();
+
+        // Tapered white checkmark polygon
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.moveTo(6.1, 12.8);
+        ctx.lineTo(10.4, 17.9);
+        ctx.lineTo(18.1, 8.2);
+        ctx.lineTo(16.5, 6.9);
+        ctx.lineTo(10.3, 14.5);
+        ctx.lineTo(7.6, 11.4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+
+        ctx.fillStyle = '#1E1F24';
+        ctx.font = `400 32px ${fontFamily}`;
+        ctx.fillText('Платеж прошел успешно', badgeX + badgeSize + 18, badgeY + 31);
+
+        // 3. Top-Right Black Simba Circle Logo (Geometric vector wordmark)
+        const logoR = 76;
+        const logoCx = W - padX - logoR;
+        const logoCy = 152;
+        ctx.fillStyle = '#000000';
+        ctx.beginPath();
+        ctx.arc(logoCx, logoCy, logoR, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(logoCx - logoR, logoCy - logoR);
+        const sScale = (logoR * 2) / 132;
+        ctx.scale(sScale, sScale);
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.lineWidth = 4.2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        // 'S'
+        ctx.beginPath();
+        ctx.moveTo(33.8, 54.6);
+        ctx.bezierCurveTo(33.4, 52.1, 30.8, 50.8, 27.3, 50.8);
+        ctx.bezierCurveTo(23.6, 50.8, 21.0, 52.5, 21.0, 55.2);
+        ctx.bezierCurveTo(21.0, 58.0, 23.8, 59.3, 27.6, 60.2);
+        ctx.bezierCurveTo(31.8, 61.2, 34.5, 62.7, 34.5, 66.1);
+        ctx.bezierCurveTo(34.5, 69.4, 31.6, 71.5, 27.4, 71.5);
+        ctx.bezierCurveTo(23.3, 71.5, 20.6, 69.6, 20.4, 66.7);
+        ctx.stroke();
+        // 'i'
+        ctx.beginPath();
+        ctx.arc(41.5, 50.4, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(41.5, 57.2);
+        ctx.lineTo(41.5, 71.5);
+        ctx.stroke();
+        // 'm'
+        ctx.beginPath();
+        ctx.moveTo(49.5, 71.5);
+        ctx.lineTo(49.5, 62.5);
+        ctx.bezierCurveTo(49.5, 59.0, 51.8, 56.8, 55.2, 56.8);
+        ctx.bezierCurveTo(58.6, 56.8, 61.2, 59.0, 61.2, 62.5);
+        ctx.lineTo(61.2, 71.5);
+        ctx.moveTo(61.2, 62.5);
+        ctx.bezierCurveTo(61.2, 59.0, 63.6, 56.8, 67.0, 56.8);
+        ctx.bezierCurveTo(70.4, 56.8, 72.8, 59.0, 72.8, 62.5);
+        ctx.lineTo(72.8, 71.5);
+        ctx.stroke();
+        // 'b'
+        ctx.beginPath();
+        ctx.moveTo(80.5, 49.5);
+        ctx.lineTo(80.5, 71.5);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(88.0, 64.2, 7.3, 0, Math.PI * 2);
+        ctx.stroke();
+        // 'a'
+        ctx.beginPath();
+        ctx.arc(108.0, 64.2, 7.3, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(115.3, 57.0);
+        ctx.lineTo(115.3, 71.5);
+        ctx.stroke();
+        ctx.restore();
+
+        // 4. Horizontal Divider Line
+        ctx.strokeStyle = '#D7D9E0';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(padX, 278);
+        ctx.lineTo(W - padX, 278);
+        ctx.stroke();
+
+        // 5. Key-Value Receipt Rows
+        const valX = padX + 430;
+        const rows = [
+          { labels: ['Получатель'], values: [tx.title], y: 365 },
+          { labels: ['Аккаунт'], values: ['Simbank'], y: 470 },
+          { labels: ['Отправитель', 'Аккаунт'], values: ['Данислам С***', '*3687 | Simbank'], y: 575 },
+          { labels: ['Код авторизации', 'RRN'], values: [authCode, rrn], y: 710 },
+          { labels: ['Сумма', 'Плата за кредит'], values: [`${absAmountDot} с`, '0.00 с'], somUnderline: true, y: 845 },
+          { labels: ['Дата'], values: [formattedDate], y: 1005 }
+        ];
+
+        rows.forEach(row => {
+          row.labels.forEach((lbl, idx) => {
+            const lineY = row.y + idx * 44;
+            ctx.fillStyle = '#7E818A';
+            ctx.font = `400 32px ${fontFamily}`;
+            ctx.fillText(lbl, padX, lineY);
+          });
+
+          row.values.forEach((val, idx) => {
+            const lineY = row.y + idx * 44;
+            ctx.fillStyle = '#18191D';
+            ctx.font = `400 32px ${fontFamily}`;
+            ctx.fillText(val, valX, lineY);
+            if (row.somUnderline && val.endsWith(' с')) {
+              const totalW = ctx.measureText(val).width;
+              const sW = ctx.measureText('с').width;
+              ctx.fillRect(valX + totalW - sW, lineY + 5, sW, 2.5);
+            }
+          });
+        });
+
+        // 6. Circular Blue Bank Stamp Overlapping Date Row
+        const stampCx = W - padX - 185;
+        const stampCy = 1135;
+        const stampR = 168;
+        ctx.save();
+        ctx.strokeStyle = '#2468D8';
+        ctx.fillStyle = '#2468D8';
+
+        ctx.lineWidth = 4.5;
+        ctx.beginPath();
+        ctx.arc(stampCx, stampCy, stampR, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.arc(stampCx, stampCy, stampR - 11, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(stampCx, stampCy, stampR - 54, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.font = `600 20px ${fontFamily}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const ringText = 'ОАО "Дос-Кредобанк" • ОАО "Дос-Кредобанк" • ОАО "Дос-Кредобанк" • ';
+        drawCurvedStampText(ctx, ringText, stampCx, stampCy, stampR - 33, -Math.PI / 2, (Math.PI * 2) / ringText.length);
+
+        ctx.save();
+        ctx.translate(stampCx, stampCy);
+        ctx.rotate((-17 * Math.PI) / 180);
+        ctx.font = `700 44px ${fontFamily}`;
+        ctx.fillText('Simbank', 0, 4);
+        ctx.restore();
+        ctx.restore();
+
+        // 7. Convert Canvas JPEG into a valid PDF 1.4 binary Blob
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
+        const base64Data = dataUrl.split(',')[1];
+        const rawBin = atob(base64Data);
+        const imgBytes = new Uint8Array(rawBin.length);
+        for (let i = 0; i < rawBin.length; i++) {
+          imgBytes[i] = rawBin.charCodeAt(i);
+        }
+
+        const pdfW = 420;
+        const pdfH = Math.round((H / W) * pdfW);
+        const encoder = new TextEncoder();
+
+        const obj1 = '1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n';
+        const obj2 = '2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n';
+        const obj3 = `3 0 obj\n<< /Type /Page /Parent 2 0 R /Resources << /XObject << /Im0 4 0 R >> >> /MediaBox [0 0 ${pdfW} ${pdfH}] /Contents 5 0 R >>\nendobj\n`;
+        const obj4Header = `4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${W} /Height ${H} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`;
+        const obj4Footer = '\nendstream\nendobj\n';
+        const contentStream = `q\n${pdfW} 0 0 ${pdfH} 0 0 cm\n/Im0 Do\nQ\n`;
+        const obj5 = `5 0 obj\n<< /Length ${contentStream.length} >>\nstream\n${contentStream}endstream\nendobj\n`;
+
+        const headerBytes = encoder.encode('%PDF-1.4\n');
+        const o1Bytes = encoder.encode(obj1);
+        const o2Bytes = encoder.encode(obj2);
+        const o3Bytes = encoder.encode(obj3);
+        const o4HeadBytes = encoder.encode(obj4Header);
+        const o4FootBytes = encoder.encode(obj4Footer);
+        const o5Bytes = encoder.encode(obj5);
+
+        const offsets = [];
+        let cursor = headerBytes.length;
+        offsets.push(cursor); cursor += o1Bytes.length;
+        offsets.push(cursor); cursor += o2Bytes.length;
+        offsets.push(cursor); cursor += o3Bytes.length;
+        offsets.push(cursor); cursor += o4HeadBytes.length + imgBytes.length + o4FootBytes.length;
+        offsets.push(cursor); cursor += o5Bytes.length;
+
+        const xrefStart = cursor;
+        let xrefStr = `xref\n0 6\n0000000000 65535 f \n`;
+        offsets.forEach(off => {
+          xrefStr += String(off).padStart(10, '0') + ' 00000 n \n';
+        });
+        xrefStr += `trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+        const xrefBytes = encoder.encode(xrefStr);
+
+        const pdfBlob = new Blob(
+          [headerBytes, o1Bytes, o2Bytes, o3Bytes, o4HeadBytes, imgBytes, o4FootBytes, o5Bytes, xrefBytes],
+          { type: 'application/pdf' }
+        );
+
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(pdfUrl), 2500);
+
+        showToast(`PDF-квитанция ${fileName} сформирована`);
+      } catch (err) {
+        showToast('Не удалось сформировать PDF');
+      }
     }
 
     function openSplitBillModal() {
@@ -1829,6 +2172,10 @@
                 <span class="text-[15px] text-[#9E8DF2] font-medium">Скачать файл index.html</span>
                 <span class="text-[#9E8DF2] text-[16px]">↓</span>
               </div>
+              <div onclick="downloadManifestFile()" class="py-3.5 flex justify-between items-center cursor-pointer">
+                <span class="text-[15px] text-[#9E8DF2] font-medium">Скачать manifest.webmanifest</span>
+                <span class="text-[#9E8DF2] text-[16px]">↓</span>
+              </div>
             </div>
           </div>
         `
@@ -1844,6 +2191,11 @@
         closeModal();
         return;
       }
+      const receiptShare = document.getElementById('receiptShareScreen');
+      if (receiptShare && receiptShare.classList.contains('open')) {
+        closeReceiptShareScreen();
+        return;
+      }
       const detail = document.getElementById('detailScreen');
       if (detail.classList.contains('open')) {
         closeTransactionDetail();
@@ -1854,6 +2206,7 @@
 
     function handleSystemHome() {
       closeModal();
+      closeReceiptShareScreen();
       closeTransactionDetail();
       switchBottomTab('home');
       expandHeader();
@@ -1909,6 +2262,7 @@
         const secTab = clone.querySelector('#secondaryTabContent');
         const modal = clone.querySelector('#modalBackdrop');
         const detail = clone.querySelector('#detailScreen');
+        const receiptShare = clone.querySelector('#receiptShareScreen');
 
         if (mainTab) mainTab.classList.remove('hidden');
         if (secTab) {
@@ -1918,6 +2272,7 @@
         }
         if (modal) modal.classList.remove('open');
         if (detail) detail.classList.remove('open');
+        if (receiptShare) receiptShare.classList.remove('open');
 
         clone.querySelectorAll('.nav-btn').forEach(btn => {
           const isHome = btn.dataset.tab === 'home';
@@ -1942,12 +2297,33 @@
       }
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    function downloadManifestFile() {
+      try {
+        const manifest = {
+          name: 'Simbank — Мобильный банк',
+          short_name: 'Simbank',
+          start_url: './index.html',
+          display: 'standalone',
+          background_color: '#0B0B0D',
+          theme_color: '#0B0B0D',
+          icons: [
+            { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
+            { src: 'icon-512.png', sizes: '512x512', type: 'image/png' }
+          ]
+        };
+        const blob = new Blob([JSON.stringify(manifest, null, 2)], { type: 'application/manifest+json;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'manifest.webmanifest';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast('Файл manifest.webmanifest скачивается');
+      } catch (e) {
+        showToast('Не удалось скачать manifest.webmanifest');
+      }
     }
 
     // ==================== INIT ====================
